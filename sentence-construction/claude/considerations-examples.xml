@@ -1,0 +1,39 @@
+<examples>
+    <example>
+        <output>
+Considerations and next steps::
+
+- The first sentence is a question about a past event - consider how questions are formed in Portuguese
+- For "this morning," think about how time expressions are typically placed in Portuguese sentences
+- The second sentence uses the past continuous tense - consider how ongoing actions in the past are expressed
+- For "looking at," consider how the verb "olhar" combines with prepositions
+- Think about how possessives work when referring to "our garden"
+- Remember that Portuguese has different forms of "you" - consider which would be appropriate in this context
+
+You can:
+
+- Try forming the question part first
+- Ask about past tense conjugation
+- Ask about time expression placement
+- Ask about how to form the continuous past tense
+- Ask about possessive pronouns
+- Make an attempt at either sentence        
+        </output>   
+        <score>6</score>
+        <score:reasons>
+            This examples scores 6 because the return information is too verbose.
+        </score:reasons>        
+    </example>  
+    <example>
+        <output>
+Next Steps:
+
+- Try using a different sentence structure for variety.
+- Experiment with another way to express "They were looking at our garden" (e.g., "Eles olhavam para o nosso jardim.").
+        </output>   
+        <score>10</score>
+        <score:reasons>
+            This examples scores 10 because the return information is concise.
+        </score:reasons>        
+    </example>  
+</examples>

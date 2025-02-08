@@ -1,6 +1,6 @@
 <sentence-structure-examples>
     <example><sentence>Did you see the raven this morning?</sentence><structure>[Interrogative] [Verb] [Subject] [Object] [Time-expression]?</structure></example>
-    <example><sentence>They were looking at our garden.</sentence><structure>[Subject] [Verb] [Prepositional phrase].</structure></example>
+    <example><sentence>They were looking at our driveway.</sentence><structure>[Subject] [Verb] [Prepositional phrase].</structure></example>
     <example><sentence>The dog is big.</sentence><structure>[Subject] [Verb] [Adjective].</structure></example>
     <example><sentence>She ate the apple yesterday.</sentence><structure>[Subject] [Verb] [Object] [Time-expression].</structure></example>
     <example><sentence>We are at the park.</sentence><structure>[Subject] [Verb] [Location].</structure></example>
