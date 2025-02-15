@@ -32,3 +32,23 @@ curl http://localhost:8008/api/generate -d '{
 ### Docker Desktop considerations
 
 For the VSCode app to connect with the containers extensions, it's not only necessary install docker on WSL, but also have the docker desktop application running.
+
+
+## Mega-service Install considerations
+
+First, install PIP on WSL (if clean distro)
+
+```sh
+sudo apt install python3-pip
+```
+
+### Install requirements
+
+```
+pip install -r requirements.txt 
+```
+
+> **error**: externally-managed-environment
+
+Since I'm using a recently installed setup for WSL and Docker Desktop, when i try to install the opea-comps, an error prevents from using the package. 
+TODO: Check integration between WSL and Windows 11 with Docker Desktop installed.
