@@ -4,7 +4,7 @@ from datetime import datetime
 import math
 
 def load(app):
-  # todo /study_sessions POST
+  # DONE - todo /study_sessions POST
 
   @app.route('/api/study-sessions', methods=['POST'])
   @cross_origin()
@@ -259,7 +259,65 @@ def load(app):
       return jsonify({"error": str(e)}), 500
 
 
-  # todo POST /study_sessions/:id/review
+  # DONE - todo POST /study_sessions/:id/review
+  
+  @app.route('/api/study-sessions/<id>/review', methods=['POST'])
+  @cross_origin()
+  def add_session_review(id):
+    try:
+        data = request.get_json()
+        
+        # Validate request body
+        if not data or 'word_id' not in data or 'correct' not in data:
+            return jsonify({
+                "error": "Missing required fields: word_id and correct"
+            }), 400
+
+        cursor = app.db.cursor()
+        
+        # Verify study session exists
+        cursor.execute('SELECT id FROM study_sessions WHERE id = ?', (id,))
+        if not cursor.fetchone():
+            return jsonify({"error": "Study session not found"}), 404
+            
+        # Verify word exists
+        cursor.execute('SELECT id FROM words WHERE id = ?', (data['word_id'],))
+        if not cursor.fetchone():
+            return jsonify({"error": "Word not found"}), 404
+
+        # Check if review already exists
+        cursor.execute('''
+            SELECT id 
+            FROM word_review_items 
+            WHERE study_session_id = ? AND word_id = ?
+        ''', (id, data['word_id']))
+        
+        existing_review = cursor.fetchone()
+
+        if existing_review:
+            # Update existing review
+            cursor.execute('''
+                UPDATE word_review_items 
+                SET correct = ?
+                WHERE study_session_id = ? AND word_id = ?
+            ''', (data['correct'], id, data['word_id']))
+        else:
+            # Insert new review
+            cursor.execute('''
+                INSERT INTO word_review_items (study_session_id, word_id, correct)
+                VALUES (?, ?, ?)
+            ''', (id, data['word_id'], data['correct']))
+        
+        app.db.commit()
+
+        return jsonify({
+            "message": "Review item processed successfully"
+        }), 200
+
+    except Exception as e:
+        app.db.rollback()
+        return jsonify({"error": str(e)}), 500
+    
 
   @app.route('/api/study-sessions/reset', methods=['POST'])
   @cross_origin()
