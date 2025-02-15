@@ -263,13 +263,13 @@ def load(app):
 ```md
 This implementation:
 
-1- Validates required fields (group_id and activity_id)
-2- Verifies that both group and activity exist
-3- Creates a new study session
-4- Returns the created session details
-5- Includes proper error handling and database transaction management
-6 -Returns HTTP 201 on successful creation
-7- Maintains consistent response format with other endpoints
+1. Validates required fields (group_id and activity_id).
+2. Verifies that both group and activity exist.
+3. Creates a new study session.
+4. Returns the created session details.
+5. Includes proper error handling and database transaction management.
+6. Returns HTTP 201 on successful creation.
+7. Maintains consistent response format with other endpoints.
 
 To test this endpoint, you can use curl or Postman with:
 ```
@@ -286,3 +286,88 @@ From the resulting code, it was possible to identify that the provided function 
 
 This minor change was done with the following prompt:
 
+```md
+> Change implementation item 4 to return the session_id
+```
+
+And *voilà!*...
+
+```python
+def load(app):
+  @app.route('/api/study-sessions', methods=['POST'])
+  @cross_origin()
+  def create_study_session():
+    try:
+      data = request.get_json()
+      
+      # Validate required fields
+      if not data or 'group_id' not in data or 'activity_id' not in data:
+        return jsonify({
+          "error": "Missing required fields: group_id and activity_id"
+        }), 400
+
+      cursor = app.db.cursor()
+      
+      # Verify group exists
+      cursor.execute('SELECT id FROM groups WHERE id = ?', (data['group_id'],))
+      if not cursor.fetchone():
+        return jsonify({"error": "Group not found"}), 404
+
+      # Verify activity exists
+      cursor.execute('SELECT id FROM study_activities WHERE id = ?', (data['activity_id'],))
+      if not cursor.fetchone():
+        return jsonify({"error": "Study activity not found"}), 404
+
+      # Create new study session
+      cursor.execute('''
+        INSERT INTO study_sessions (group_id, study_activity_id, created_at)
+        VALUES (?, ?, ?)
+      ''', (data['group_id'], data['activity_id'], datetime.utcnow()))
+      
+      session_id = cursor.lastrowid
+      app.db.commit()
+
+      return jsonify({
+        'session_id': session_id
+      }), 201
+
+    except Exception as e:
+      app.db.rollback()
+      return jsonify({"error": str(e)}), 500
+
+  # ...existing code...
+```
+```md
+The changes:
+
+1. Simplified response to only return the *session_id*.
+2. Maintains HTTP 201 status code for resource creation.
+3. Keeps all validation and error handling.
+4. More efficient since we don't need additional queries to fetch session details.
+
+To test with curl:
+```
+```sh
+curl -X POST http://localhost:5000/api/study-sessions \
+  -H "Content-Type: application/json" \
+  -d '{"group_id": 1, "activity_id": 1}'
+```
+
+<br/>
+The same steps were made for all the assignment methods:
+
+- POST /study_sessions
+- POST /study_sessions/:id/review
+- GET /groups/:id/words/raw
+
+
+#### Creation of created methods API documentation
+
+Finally, a `readme.md` file was created by the Code Assistant based on the actions taken by the GitHub Copilot:
+
+- [API Methods documentation](https://github.com/VCharrua/free-genai-bootcamp-2025/lang-portal/backend-flask/routes/Readme.md)
+
+
+### Branch Merge
+
+In order to merge the Week 1 with the main branch, a pull request was created and the branch merged.
