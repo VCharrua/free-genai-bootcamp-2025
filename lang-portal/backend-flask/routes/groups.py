@@ -171,11 +171,9 @@ def load(app):
         # Query to fetch all words with their parts
         cursor.execute('''
             SELECT 
-                w.*,
-                wp.parts
+                w.*
             FROM words w
             JOIN word_groups wg ON w.id = wg.word_id
-            LEFT JOIN word_parts wp ON w.id = wp.word_id
             WHERE wg.group_id = ?
             ORDER BY w.kanji
         ''', (id,))
