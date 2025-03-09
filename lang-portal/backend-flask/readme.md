@@ -169,29 +169,22 @@ You can test the API using tools like:
 ### Example API Requests
 
 Get all vocabulary words:
-```
-GET http://localhost:5000/api/words
+```bash
+curl -X GET http://localhost:5000/api/words
 ```
 
 Create a new study session:
-```
-POST http://localhost:5000/api/study_sessions
-Content-Type: application/json
-
-{
-  "group_id": 1,
-  "study_activity_id": 1
-}
+```bash
+curl -X POST http://localhost:5000/api/study_sessions \
+  -H "Content-Type: application/json" \
+  -d '{"group_id": 1, "study_activity_id": 1}'
 ```
 
 Record a word review:
-```
-POST http://localhost:5000/api/study_sessions/1/words/1/review
-Content-Type: application/json
-
-{
-  "correct": true
-}
+```bash
+curl -X POST http://localhost:5000/api/study_sessions/1/words/1/review \
+  -H "Content-Type: application/json" \
+  -d '{"correct": true}'
 ```
 
 ## Error Handling
