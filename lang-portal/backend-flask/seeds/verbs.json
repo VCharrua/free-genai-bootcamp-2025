@@ -1,0 +1,52 @@
+[
+  {
+    "portuguese": "falar",
+    "kimbundu": "kuzuela",
+    "english": "to speak",
+    "parts": {
+      "portuguese": "fal",
+      "kimbundu": "zuel",
+      "english": "speak"
+    }
+  },
+  {
+    "portuguese": "comer",
+    "kimbundu": "kudia",
+    "english": "to eat",
+    "parts": {
+      "portuguese": "com",
+      "kimbundu": "di",
+      "english": "eat"
+    }
+  },
+  {
+    "portuguese": "beber",
+    "kimbundu": "kunua",
+    "english": "to drink",
+    "parts": {
+      "portuguese": "beb",
+      "kimbundu": "nu",
+      "english": "drink"
+    }
+  },
+  {
+    "portuguese": "andar",
+    "kimbundu": "kutambula",
+    "english": "to walk",
+    "parts": {
+      "portuguese": "and",
+      "kimbundu": "tambul",
+      "english": "walk"
+    }
+  },
+  {
+    "portuguese": "correr",
+    "kimbundu": "kunyema",
+    "english": "to run",
+    "parts": {
+      "portuguese": "corr",
+      "kimbundu": "nyem",
+      "english": "run"
+    }
+  }
+]

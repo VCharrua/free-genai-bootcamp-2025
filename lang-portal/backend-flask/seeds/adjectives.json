@@ -1,0 +1,52 @@
+[
+  {
+    "portuguese": "bom",
+    "kimbundu": "uambote",
+    "english": "good",
+    "parts": {
+      "portuguese": "bo",
+      "kimbundu": "uambo",
+      "english": "good"
+    }
+  },
+  {
+    "portuguese": "mau",
+    "kimbundu": "iibi",
+    "english": "bad",
+    "parts": {
+      "portuguese": "ma",
+      "kimbundu": "iib",
+      "english": "bad"
+    }
+  },
+  {
+    "portuguese": "grande",
+    "kimbundu": "inene",
+    "english": "big",
+    "parts": {
+      "portuguese": "grand",
+      "kimbundu": "inen",
+      "english": "big"
+    }
+  },
+  {
+    "portuguese": "pequeno",
+    "kimbundu": "nini",
+    "english": "small",
+    "parts": {
+      "portuguese": "pequen",
+      "kimbundu": "nin",
+      "english": "small"
+    }
+  },
+  {
+    "portuguese": "novo",
+    "kimbundu": "iavulu",
+    "english": "new",
+    "parts": {
+      "portuguese": "nov",
+      "kimbundu": "iavul",
+      "english": "new"
+    }
+  }
+]

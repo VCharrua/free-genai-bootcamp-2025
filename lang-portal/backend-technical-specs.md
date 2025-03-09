@@ -131,6 +131,18 @@ Returns quick overview statistics.
 }
 ```
 
+###  POST /api/dashboard/full_reset
+Performs a full reset of the database.
+
+#### JSON Response
+```json
+{
+  "success": true,
+  "message": "Full reset successfully"
+}
+```
+
+
 
 ###  GET /api/study-activities
 Returns a list of study activities.
@@ -611,18 +623,6 @@ Records a review of a word in a study session.
 ```
 
 
-
-
-###  POST /api/full_reset
-Performs a full reset of the database.
-
-#### JSON Response
-```json
-{
-  "success": true,
-  "message": "Full reset successfully"
-}
-```
 
 
 

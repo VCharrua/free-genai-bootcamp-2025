@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Flashcards",
+    "url": "https://example.com/flashcards",
+    "preview_url": "https://example.com/previews/flashcards.jpg"
+  },
+  {
+    "name": "Quiz",
+    "url": "https://example.com/quiz",
+    "preview_url": "https://example.com/previews/quiz.jpg"
+  },
+  {
+    "name": "Matching Game",
+    "url": "https://example.com/matching",
+    "preview_url": "https://example.com/previews/matching.jpg"
+  },
+  {
+    "name": "Word Search",
+    "url": "https://example.com/wordsearch",
+    "preview_url": "https://example.com/previews/wordsearch.jpg"
+  }
+]
