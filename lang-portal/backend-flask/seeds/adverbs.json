@@ -1,0 +1,52 @@
+[
+  {
+    "portuguese": "aqui",
+    "kimbundu": "boba",
+    "english": "here",
+    "parts": {
+      "portuguese": "aqu",
+      "kimbundu": "bob",
+      "english": "here"
+    }
+  },
+  {
+    "portuguese": "ali",
+    "kimbundu": "bobo",
+    "english": "there",
+    "parts": {
+      "portuguese": "al",
+      "kimbundu": "bob",
+      "english": "there"
+    }
+  },
+  {
+    "portuguese": "agora",
+    "kimbundu": "uanima",
+    "english": "now",
+    "parts": {
+      "portuguese": "agor",
+      "kimbundu": "uanim",
+      "english": "now"
+    }
+  },
+  {
+    "portuguese": "depois",
+    "kimbundu": "kisukiri",
+    "english": "later",
+    "parts": {
+      "portuguese": "depoi",
+      "kimbundu": "kisukir",
+      "english": "later"
+    }
+  },
+  {
+    "portuguese": "rápido",
+    "kimbundu": "mbangimbagi",
+    "english": "quickly",
+    "parts": {
+      "portuguese": "rápid",
+      "kimbundu": "mbangimbag",
+      "english": "quick"
+    }
+  }
+]

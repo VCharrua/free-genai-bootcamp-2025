@@ -1,0 +1,52 @@
+[
+  {
+    "portuguese": "um",
+    "kimbundu": "moxi",
+    "english": "one",
+    "parts": {
+      "portuguese": "u",
+      "kimbundu": "mox",
+      "english": "one"
+    }
+  },
+  {
+    "portuguese": "dois",
+    "kimbundu": "iari",
+    "english": "two",
+    "parts": {
+      "portuguese": "doi",
+      "kimbundu": "iar",
+      "english": "two"
+    }
+  },
+  {
+    "portuguese": "três",
+    "kimbundu": "tatu",
+    "english": "three",
+    "parts": {
+      "portuguese": "trê",
+      "kimbundu": "tat",
+      "english": "three"
+    }
+  },
+  {
+    "portuguese": "quatro",
+    "kimbundu": "uana",
+    "english": "four",
+    "parts": {
+      "portuguese": "quatr",
+      "kimbundu": "uan",
+      "english": "four"
+    }
+  },
+  {
+    "portuguese": "cinco",
+    "kimbundu": "tanu",
+    "english": "five",
+    "parts": {
+      "portuguese": "cinc",
+      "kimbundu": "tan",
+      "english": "five"
+    }
+  }
+]
