@@ -25,7 +25,8 @@ instance/
 flask_session/
 
 # Database files
-*.db
+# OBS: For the purpose of this bootcamp, the database file will be uploaded and the associated rule (*.db) temporarily commented.
+# *.db
 *.sqlite
 *.sqlite3
 
