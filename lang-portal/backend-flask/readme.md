@@ -209,3 +209,32 @@ Errors are returned as JSON with an error message.
 - Implement user authentication if multi-user support is needed
 - Add more detailed analytics for learning progress
 - Add caching for frequently accessed data
+
+# Backend Flask API
+
+## Testing the API Endpoints
+
+This project includes a comprehensive test suite to ensure all API endpoints return expected responses.
+
+### Running the Tests
+
+1. Make sure all dependencies are installed:
+```bash
+pip install pytest pytest-cov
+```
+
+2. Run the test suite using the provided script:
+```bash
+./run_tests.sh
+```
+
+### What the Tests Cover
+
+- **Automatic Route Discovery**: Tests automatically discover all defined routes
+- **Response Status Validation**: Ensures endpoints return appropriate status codes (not 500)
+- **JSON Response Validation**: Checks that JSON responses are properly formatted
+- **Specific Endpoint Testing**: Detailed tests for critical endpoints
+
+### Adding New Tests
+
+When adding new API endpoints, the automatic discovery test will include them in basic testing. For endpoints that need more detailed verification, add specific test cases to `tests/test_specific_endpoints.py`.
