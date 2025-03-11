@@ -73,6 +73,7 @@ The database consists of the following tables:
 - `GET /api/dashboard/study_progress` - Get vocabulary study progress statistics
 - `GET /api/dashboard/quick_stats` - Get overview statistics
 - `POST /api/dashboard/full_reset` - Reset all user data
+- `GET /api/dashboard/performance_graph` - Get performance statistics for the last 31 days
 
 ### Study Activities
 
@@ -102,6 +103,7 @@ The database consists of the following tables:
 - `GET /api/study_sessions/:id/words` - Get words reviewed in a session
 - `POST /api/study_sessions/:id/words/:word_id/review` - Record a word review
 - `POST /api/study_sessions/reset_history` - Reset study history
+- `GET /api/study_sessions/continue_learning` - Get in-progress study sessions (up to 3)
 
 ## Setup and Deployment
 

@@ -1,21 +1,25 @@
 [
   {
     "name": "Flashcards",
+    "description": "Practice vocabulary with interactive flashcards",
     "url": "https://example.com/flashcards",
     "preview_url": "https://example.com/previews/flashcards.jpg"
   },
   {
     "name": "Quiz",
+    "description": "Test your knowledge with a comprehensive quiz",
     "url": "https://example.com/quiz",
     "preview_url": "https://example.com/previews/quiz.jpg"
   },
   {
     "name": "Matching Game",
+    "description": "Improve memory by matching related words and concepts",
     "url": "https://example.com/matching",
     "preview_url": "https://example.com/previews/matching.jpg"
   },
   {
     "name": "Word Search",
+    "description": "Find hidden words to build your vocabulary skills",
     "url": "https://example.com/wordsearch",
     "preview_url": "https://example.com/previews/wordsearch.jpg"
   }

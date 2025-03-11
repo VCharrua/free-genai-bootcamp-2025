@@ -143,6 +143,30 @@ Performs a full reset of the database.
 ```
 
 
+### GET /api/dashboard/performance_graph
+Returns performance statistics for the last 31 days.
+
+#### JSON Response
+```json
+[
+  {
+    "id": 1,
+    "start_time": "2023-10-01",
+    "review_items_count": 24,
+    "correct_count": 20,
+    "wrong_count": 4
+  },
+  {
+    "id": 2,
+    "start_time": "2023-10-02",
+    "review_items_count": 13,
+    "correct_count": 10,
+    "wrong_count": 3
+  }
+]
+```
+
+
 
 ###  GET /api/study-activities
 Returns a list of study activities.
@@ -154,13 +178,15 @@ Returns a list of study activities.
     "id": 1,
     "name": "Flashcards",
     "description": "A study activity using flashcards to learn vocabulary.",
-    "thumbnail_url": "http://example.com/flashcards/thumbnail"
+    "url": "https://example.com/flashcards",
+    "preview_url": "http://example.com/flashcards/thumbnail"
   },
   {
     "id": 2,
     "name": "Quiz",
     "description": "A study activity using quizzes to test vocabulary knowledge.",
-    "thumbnail_url": "http://example.com/quiz/thumbnail"
+    "url": "https://example.com/quiz",
+    "preview_url": "http://example.com/quiz/thumbnail"
   }
 ]
 ```
@@ -174,7 +200,8 @@ Returns details of a specific study activity.
   "id": 1,
   "name": "Flashcards",
   "description": "A study activity using flashcards to learn vocabulary.",
-  "thumbnail_url": "http://example.com/flashcards/thumbnail"
+  "url": "https://example.com/flashcards",
+  "preview_url": "http://example.com/flashcards/thumbnail"
 }
 ```
 
@@ -549,6 +576,32 @@ Returns details of a specific study session.
   "review_items_count": 20
 }
 ```
+
+###  GET /api/study_sessions/continue_learning
+Returns a list of 3 study sessions that the user should continue learning, where the words reviewed are less than the number of words in the group.
+
+#### JSON Response
+```json
+[
+  {
+    "id": 1,
+    "activity_id": 1,
+    "group_id": 1,
+    "group_name": "Basic Vocabulary",
+    "review_items_count": 7,
+    "total_words_count": 10
+  },
+  {
+    "id": 2,
+    "activity_id": 1,
+    "group_id": 2,
+    "group_name": "Advanced Vocabulary",
+    "review_items_count": 2,
+    "total_words_count": 7
+  }
+]
+```
+
 
 ###  GET /api/study_sessions/:id/words
 Returns a list of words reviewed in a specific study session.

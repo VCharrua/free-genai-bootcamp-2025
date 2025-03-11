@@ -335,6 +335,40 @@ class StudySession:
         execute_db("DELETE FROM word_review_items")
         execute_db("DELETE FROM study_sessions")
         return {'success': True, 'message': 'History reset successfully'}
+    
+    @staticmethod
+    def get_continue_learning():
+        """
+        Returns a list of 3 study sessions where the words reviewed are less than the total words in the group.
+        """
+        try:
+            query = """
+            SELECT 
+                ss.id,
+                ss.study_activity_id AS activity_id,
+                ss.group_id,
+                g.name AS group_name,
+                COUNT(DISTINCT wri.word_id) AS review_items_count,
+                g.words_count AS total_words_count
+            FROM 
+                study_sessions ss
+            JOIN 
+                groups g ON ss.group_id = g.id
+            LEFT JOIN 
+                word_review_items wri ON ss.id = wri.study_session_id
+            GROUP BY 
+                ss.id
+            HAVING 
+                review_items_count < total_words_count
+            ORDER BY 
+                ss.created_at DESC
+            LIMIT 3
+            """
+            
+            result = query_db(query)
+            return result  # This already returns the exact format specified in the documentation
+        except Exception as e:
+            raise Exception(f"Error fetching continue learning sessions: {str(e)}")
 
 class Dashboard:
     @staticmethod
@@ -414,3 +448,36 @@ class Dashboard:
         execute_db("DELETE FROM word_review_items")
         execute_db("DELETE FROM study_sessions")
         return {'success': True, 'message': 'Full reset successfully'}
+    
+    @staticmethod
+    def get_performance_graph():
+        """
+        Returns performance statistics for the last 31 days.
+        """
+        try:
+            # Calculate date 31 days ago
+            import datetime
+            thirty_one_days_ago = (datetime.datetime.now() - datetime.timedelta(days=31)).strftime('%Y-%m-%d')
+            
+            query = """
+            SELECT 
+                ss.id,
+                DATE(ss.created_at) as start_time,
+                COUNT(wri.id) as review_items_count,
+                SUM(CASE WHEN wri.correct = 1 THEN 1 ELSE 0 END) as correct_count,
+                SUM(CASE WHEN wri.correct = 0 THEN 1 ELSE 0 END) as wrong_count
+            FROM 
+                study_sessions ss
+            LEFT JOIN 
+                word_review_items wri ON ss.id = wri.study_session_id
+            WHERE 
+                DATE(ss.created_at) >= ?
+            GROUP BY 
+                ss.id, DATE(ss.created_at)
+            ORDER BY 
+                DATE(ss.created_at) ASC
+            """
+            
+            return query_db(query, (thirty_one_days_ago,))
+        except Exception as e:
+            raise Exception(f"Error fetching performance graph data: {str(e)}")

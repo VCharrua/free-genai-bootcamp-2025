@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from app.models import StudySession
 from app.utils import get_pagination_params
+from lib.db import query_db
 
 study_session_bp = Blueprint('study_sessions', __name__)
 
@@ -44,3 +45,10 @@ def record_word_review(session_id, word_id):
 @study_session_bp.route('/study_sessions/reset_history', methods=['POST'])
 def reset_history():
     return jsonify(StudySession.reset_history())
+
+@study_session_bp.route('/continue_learning', methods=['GET'])
+def get_continue_learning():
+    """
+    Returns a list of 3 study sessions where the words reviewed are less than the total words in the group.
+    """
+    return jsonify(StudySession.get_continue_learning())
