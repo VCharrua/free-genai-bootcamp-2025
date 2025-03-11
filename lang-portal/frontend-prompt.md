@@ -86,7 +86,7 @@ Beneath the banner will be a breadcrumb so users can easily see where they are i
 
 ## Pages
 
-### Dashboard
+### PAGE: Dashboard (default page)
 
 This page provides a summary of the student's progression.
 
@@ -121,6 +121,7 @@ This page provides a summary of the student's progression.
 - Performance Graph
     - Shows Vocabulary Progress
     - monthly performance with three lines (correct, wrong and total reviews)
+    - Should account that the results from the API call only include dates where there was activity.
 
 
 #### Backend API calls for the Dashboard `Last study session` component
@@ -219,7 +220,7 @@ Returns recent incomplete study sessions.
 
 
 
-### Study Activity Index
+### PAGE: Study Activity Index
 
 The route for this page /study-activities
 
@@ -265,7 +266,7 @@ Cards will get data from the following endpoint:
 ```
 
 
-### Study Activity Launch Page
+### PAGE: Study Activity Launch
 
 The route for this page /study_activities/:id/launch
 
@@ -313,7 +314,7 @@ This page will get data for the group selection from the following endpoint:
 }
 ```
 
-### Study Activity Show
+### PAGE: Study Activity Show
 
 The route for this page /study_activities/:id
 
@@ -382,7 +383,7 @@ This page will use the :id route param to call the following endpoints:
 ```
 
 
-### Word Index
+### PAGE: Word Index
 
 The route for this page /words
 
@@ -451,7 +452,7 @@ Returns a list of words by calling the following endpoint:
 ```
 
 
-### Word Show
+### PAGE: Word Show
 
 The route for this page /words/:id
 
@@ -502,7 +503,7 @@ Returns details of a specific word by calling the following endpoint:
 }
 ```
 
-### Group Index
+### PAGE: Group Index
 
 The route for this page /groups
 
@@ -541,7 +542,7 @@ Returns a list of groups by calling the following endpoint:
 }
 ```
 
-### Group Show
+### PAGE: Group Show
 
 The route for this page /groups/:id
 
@@ -654,7 +655,7 @@ Returns a list of study sessions for the group by calling the following endpoint
 ```
 
 
-### Study Session Index
+### PAGE: Study Session Index
 
 The route for this page /study_sessions
 
@@ -696,7 +697,7 @@ Returns a list of study sessions by calling the following endpoint:
 }
 ```
 
-### Settings
+### PAGE: Settings
 
 The route for this page /settings
 

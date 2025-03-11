@@ -165,8 +165,8 @@ def seed_study_activities(seeds_dir):
             activities = json.load(f)
             for activity in activities:
                 execute_db(
-                    "INSERT INTO study_activities (name, url, preview_url) VALUES (?, ?, ?)",
-                    (activity['name'], activity['url'], activity['preview_url'])
+                    "INSERT INTO study_activities (name, description, url, preview_url) VALUES (?, ?, ?, ?)",
+                    (activity['name'], activity['description'], activity['url'], activity['preview_url'])
                 )
         logger.info("Seeded study activities")
         print("Seeded study activities")
