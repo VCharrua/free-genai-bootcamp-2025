@@ -134,8 +134,10 @@ Returns information about the most recent study session.
 {
   "id": 1,
   "group_id": 1,
-  "created_at": "2023-10-01T12:00:00Z",
+  "start_time": "2023-10-01T11:00:00Z",
+  "end_time": "2023-10-01T12:00:00Z",
   "activity_name": "Flashcards",
+  "group_name": "Basic Vocabulary",
   "correct_count": 20,
   "wrong_count": 4    
 }
@@ -150,6 +152,7 @@ Return study progress statistics.
 {
   "total_words": 100,
   "studied_words": 50,
+  "studied_words_trend": 10
 }
 ```
 
@@ -161,6 +164,7 @@ Returns quick overview statistics.
 ```json
 {
   "success_rate": 80.0,
+  "success_rate_trend": 10.0,
   "total_study_sessions": 4,
   "total_active_groups": 3,
   "study_streak_days": 4

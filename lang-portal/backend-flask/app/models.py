@@ -374,11 +374,19 @@ class Dashboard:
     @staticmethod
     def get_last_study_session():
         session = query_db("""
-            SELECT ss.id, ss.group_id, ss.created_at, sa.name as activity_name,
+            SELECT ss.id, ss.group_id, 
+                   ss.created_at as start_time, 
+                   COALESCE(
+                       (SELECT MAX(created_at) FROM word_review_items WHERE study_session_id = ss.id),
+                       ss.created_at
+                   ) as end_time,
+                   sa.name as activity_name,
+                   g.name as group_name,
                    (SELECT COUNT(*) FROM word_review_items WHERE study_session_id = ss.id AND correct = 1) as correct_count,
                    (SELECT COUNT(*) FROM word_review_items WHERE study_session_id = ss.id AND correct = 0) as wrong_count
             FROM study_sessions ss
             JOIN study_activities sa ON ss.study_activity_id = sa.id
+            JOIN groups g ON ss.group_id = g.id
             ORDER BY ss.created_at DESC
             LIMIT 1
         """, one=True)
@@ -386,8 +394,10 @@ class Dashboard:
         return session or {
             'id': None,
             'group_id': None,
-            'created_at': None,
+            'start_time': None,
+            'end_time': None,
             'activity_name': None,
+            'group_name': None,
             'correct_count': 0,
             'wrong_count': 0
         }
@@ -400,9 +410,36 @@ class Dashboard:
             one=True
         )['count']
         
+        # Calculate studied words trend as a percentage
+        # Get the latest session ID
+        latest_session = query_db("""
+            SELECT id FROM study_sessions 
+            ORDER BY created_at DESC 
+            LIMIT 1
+        """, one=True)
+        
+        studied_words_trend = 0
+        if latest_session:
+            # Count new words learned in the latest session (not seen before)
+            new_words_count = query_db("""
+                SELECT COUNT(DISTINCT word_id) as count
+                FROM word_review_items
+                WHERE study_session_id = ? 
+                AND word_id NOT IN (
+                    SELECT DISTINCT word_id 
+                    FROM word_review_items 
+                    WHERE study_session_id != ?
+                )
+            """, (latest_session['id'], latest_session['id']), one=True)['count']
+            
+            # Calculate trend as percentage of total studied words
+            if studied_words > 0:
+                studied_words_trend = round((new_words_count / studied_words) * 100, 1)
+        
         return {
             'total_words': total_words,
-            'studied_words': studied_words
+            'studied_words': studied_words,
+            'studied_words_trend': studied_words_trend
         }
     
     @staticmethod
@@ -419,6 +456,45 @@ class Dashboard:
         if review_stats['total'] > 0:
             success_rate = (review_stats['correct'] / review_stats['total']) * 100
         
+        # Calculate success rate trend
+        # Get the latest session ID
+        latest_session = query_db("""
+            SELECT id FROM study_sessions 
+            ORDER BY created_at DESC 
+            LIMIT 1
+        """, one=True)
+        
+        success_rate_trend = 0
+        if latest_session:
+            # Calculate success rate for previous sessions
+            previous_stats = query_db("""
+                SELECT 
+                    COUNT(*) as total,
+                    SUM(CASE WHEN correct = 1 THEN 1 ELSE 0 END) as correct
+                FROM word_review_items
+                WHERE study_session_id != ?
+            """, (latest_session['id'],), one=True)
+            
+            # Calculate success rate for the latest session
+            latest_stats = query_db("""
+                SELECT 
+                    COUNT(*) as total,
+                    SUM(CASE WHEN correct = 1 THEN 1 ELSE 0 END) as correct
+                FROM word_review_items
+                WHERE study_session_id = ?
+            """, (latest_session['id'],), one=True)
+            
+            previous_rate = 0
+            if previous_stats['total'] > 0:
+                previous_rate = (previous_stats['correct'] / previous_stats['total']) * 100
+                
+            latest_rate = 0
+            if latest_stats['total'] > 0:
+                latest_rate = (latest_stats['correct'] / latest_stats['total']) * 100
+                
+            # Calculate trend (difference between latest and previous rates)
+            success_rate_trend = latest_rate - previous_rate
+
         # Get session count
         total_sessions = query_db(
             "SELECT COUNT(*) as count FROM study_sessions", 
@@ -438,6 +514,7 @@ class Dashboard:
         
         return {
             'success_rate': round(success_rate, 1),
+            'success_rate_trend': round(success_rate_trend, 1),
             'total_study_sessions': total_sessions,
             'total_active_groups': active_groups,
             'study_streak_days': study_streak

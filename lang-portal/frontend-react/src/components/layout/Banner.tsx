@@ -56,9 +56,9 @@ const Banner = ({ isSidebarOpen, toggleSidebar, isHome }: BannerProps) => {
       
     
       {/* Right-aligned image */}
-      <div className={cn("absolute right-0 top-0 bottom-0 z-20 flex items-center ", isHome ? "p-[30px]" : "p-[15px]")}>
+      <div className={cn("absolute right-0 top-0 bottom-0 z-20 flex items-center ", isHome ? "pb-[30px]" : "pb-[15px]")}>
         <img 
-          src="/images/made-in-angola-v1.png" 
+          src="/images/made-in-angola-v3.png" 
           alt="Made in Angola" 
           className={cn(
             "h-full object-contain object-right max-w-none transition-all duration-300",

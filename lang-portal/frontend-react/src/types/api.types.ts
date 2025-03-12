@@ -19,8 +19,10 @@ export interface PaginatedResponse<T> {
 export interface LastStudySessionResponse {
   id: number;
   group_id: number;
-  created_at: string;
+  start_time: string;
+  end_time: string;
   activity_name: string;
+  group_name: string;
   correct_count: number;
   wrong_count: number;
 }
@@ -28,10 +30,12 @@ export interface LastStudySessionResponse {
 export interface StudyProgressResponse {
   total_words: number;
   studied_words: number;
+  studied_words_trend: number;
 }
 
 export interface QuickStatsResponse {
   success_rate: number;
+  success_rate_trend: number;
   total_study_sessions: number;
   total_active_groups: number;
   study_streak_days: number;
