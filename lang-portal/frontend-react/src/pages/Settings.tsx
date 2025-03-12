@@ -19,6 +19,10 @@ const Settings = () => {
     // In a real app, this would update the theme
     const newMode = !isDarkMode ? "dark" : "light";
     document.documentElement.classList.toggle("dark", !isDarkMode);
+
+    // document.documentElement.classList.remove('dark');
+    // document.documentElement.classList.add('orange-ang');
+
     toast({
       title: "Theme Updated",
       description: `Theme set to ${newMode} mode`,

@@ -71,7 +71,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
           isOpen ? "w-full opacity-100" : "w-0 opacity-0 md:hidden"
         )}>
           <h1 className="font-semibold tracking-tight text-lg">
-            Language Portal
+            My Language Portal
           </h1>
         </div>
         
@@ -124,7 +124,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
         isOpen ? "opacity-100" : "opacity-0 md:hidden"
       )}>
         <div className="text-xs text-muted-foreground">
-          © 2024 Language Portal
+          © 2025 Vitor Charrua
         </div>
       </div>
     </aside>
