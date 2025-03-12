@@ -15,7 +15,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Separator } from "@/components/ui/separator";
 import StatCard from "@/components/ui/StatCard";
 import { useDashboardData } from "@/hooks/dashboard/useDashboardData";
-import { calculateDuration } from "@/utils/dateUtils";
+import { calculateDuration } from "@/lib/dateUtils";
 
 
 const Dashboard = () => {
@@ -26,7 +26,7 @@ const Dashboard = () => {
     setMounted(true);
   }, []);
   
-  if (isLoading) return <div>Loading dashboard data...</div>;
+  if (isLoading) return <div><h2 className="text-xl font-semibold tracking-tight text-muted-foreground">Loading dashboard data...</h2></div>;
   if (error) return <div>Error loading dashboard data</div>;
 
   return (
@@ -137,6 +137,7 @@ const Dashboard = () => {
             </Card>
           )}
           
+          {/* */}
           <Card className="hover:shadow-md transition-shadow">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -150,31 +151,55 @@ const Dashboard = () => {
             <CardContent className="space-y-4">
               <div className="flex justify-between items-center">
                 <div>
-                  <p className="font-medium">{continueLearning[0].group_name}</p>
-                  <p className="text-sm text-muted-foreground">{continueLearning[0].total_words_count - continueLearning[0].review_items_count} words remaining</p>
+                  <p className="font-medium">{continueLearning?.[0]?.group_name ?? "No group available"}</p>
+                  <p className="text-sm text-muted-foreground">{(continueLearning?.[0]?.total_words_count ?? 0) - (continueLearning?.[0]?.review_items_count??0)} words remaining</p>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <div className="text-sm font-medium">{`${continueLearning[0].review_items_count}/${continueLearning[0].total_words_count}`}</div>
+                  <div className="text-sm font-medium">{`${continueLearning?.[0]?.review_items_count??0}/${continueLearning?.[0]?.total_words_count??0}`}</div>
                   <div className="h-2 w-16 bg-secondary rounded-full overflow-hidden">
-                    <div className="h-full bg-primary" style={{ width: '70%' }}></div>
+                    <div 
+                      className="h-full bg-primary" 
+                      style={{ 
+                        width: (() => {
+                          const reviewed = continueLearning?.[0]?.review_items_count ?? 0;
+                          const total = continueLearning?.[0]?.total_words_count ?? 1; // Avoid division by zero
+                          
+                          if (total === 0) return '0%';
+                          return `${Math.round((reviewed / total) * 100)}%`;
+                        })()
+                      }}
+                    ></div>
                   </div>
                 </div>
               </div>
               
               <Separator />
               
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="font-medium">{continueLearning[1].group_name}</p>
-                  <p className="text-sm text-muted-foreground">{continueLearning[1].total_words_count - continueLearning[1].review_items_count} words remaining</p>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="text-sm font-medium">{`${continueLearning[1].review_items_count}/${continueLearning[1].total_words_count}`}</div>
-                  <div className="h-2 w-16 bg-secondary rounded-full overflow-hidden">
-                    <div className="h-full bg-primary" style={{ width: '50%' }}></div>
+              {continueLearning.length > 1 && (
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="font-medium">{continueLearning[1].group_name}</p>
+                    <p className="text-sm text-muted-foreground">{continueLearning[1].total_words_count - continueLearning[1].review_items_count} words remaining</p>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="text-sm font-medium">{`${continueLearning[1].review_items_count}/${continueLearning[1].total_words_count}`}</div>
+                    <div className="h-2 w-16 bg-secondary rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-primary" 
+                        style={{ 
+                          width: (() => {
+                            const reviewed = continueLearning?.[1]?.review_items_count ?? 0;
+                            const total = continueLearning?.[1]?.total_words_count ?? 1; // Avoid division by zero
+                            
+                            if (total === 0) return '0%';
+                            return `${Math.round((reviewed / total) * 100)}%`;
+                          })()
+                        }}
+                      ></div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}   
             </CardContent>
             <CardFooter>
               <Button className="w-full" asChild>
@@ -184,6 +209,7 @@ const Dashboard = () => {
               </Button>
             </CardFooter>
           </Card>
+          
         </div>
       </section>
       

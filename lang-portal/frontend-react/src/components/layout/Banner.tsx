@@ -45,7 +45,7 @@ const Banner = ({ isSidebarOpen, toggleSidebar, isHome }: BannerProps) => {
       />
       
       {/* Gradient overlay for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/80 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/60 to-primary/50 z-10" />
       
 
       {/* Decorative elements */}

@@ -46,7 +46,7 @@ def record_word_review(session_id, word_id):
 def reset_history():
     return jsonify(StudySession.reset_history())
 
-@study_session_bp.route('/continue_learning', methods=['GET'])
+@study_session_bp.route('/study_sessions/continue_learning', methods=['GET'])
 def get_continue_learning():
     """
     Returns a list of 3 study sessions where the words reviewed are less than the total words in the group.
