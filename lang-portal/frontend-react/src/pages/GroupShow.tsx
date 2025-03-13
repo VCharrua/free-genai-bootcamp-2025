@@ -131,7 +131,7 @@ const GroupShow = () => {
             </div>
             
             <div>
-              <h3 className="text-sm font-medium text-muted-foreground mb-1">Group Review Percentage</h3>
+              <h3 className="text-sm font-medium text-muted-foreground mb-1">Group Review coverage</h3>
               <span className="text-lg font-medium">{group.stats.reviewed_percentage || 0}%</span>
             </div>
           </div>

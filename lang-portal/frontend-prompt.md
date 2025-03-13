@@ -257,14 +257,20 @@ Cards will get data from the following endpoint:
     "name": "Flashcards",
     "description": "A study activity using flashcards to learn vocabulary.",
     "url": "https://example.com/flashcards",
-    "preview_url": "http://example.com/flashcards/thumbnail"
+    "preview_url": "http://example.com/flashcards/thumbnail",
+    "release_date" : "2024",
+    "average_duration" : 20,
+    "focus" : "Learning activity"
   },
   {
     "id": 2,
     "name": "Quiz",
     "description": "A study activity using quizzes to test vocabulary knowledge.",
     "url": "https://example.com/quiz",
-    "preview_url": "http://example.com/quiz/thumbnail"
+    "preview_url": "http://example.com/quiz/thumbnail",
+    "release_date": "2023",
+    "average_duration": 15,
+    "focus": "Assessment"
   }
 ]
 ```
@@ -296,7 +302,10 @@ This page will get data for the group selection from the following endpoint:
     "name": "Flashcards",
     "description": "A study activity using flashcards to learn vocabulary.",
     "url": "http://example.com/activities/flashcards",
-    "preview_url": "http://example.com/previews/flashcards.jpg"
+    "preview_url": "http://example.com/previews/flashcards.jpg",
+    "release_date" : "2024",
+    "average_duration" : 20,
+    "focus" : "Learning activity"
   },
   "groups": [
     {
@@ -349,7 +358,10 @@ This page will use the :id route param to call the following endpoints:
   "name": "Flashcards",
   "description": "A study activity using flashcards to learn vocabulary.",
   "url": "https://example.com/wordsearch",  
-  "preview_url": "http://example.com/flashcards/thumbnail"
+  "preview_url": "http://example.com/flashcards/thumbnail",
+  "release_date" : "2024",
+  "average_duration" : 20,
+  "focus" : "Learning activity"
 }
 ```
 

@@ -183,14 +183,20 @@ Returns a list of study activities.
     "name": "Flashcards",
     "description": "A study activity using flashcards to learn vocabulary.",
     "url": "https://example.com/flashcards",
-    "preview_url": "http://example.com/flashcards/thumbnail"
+    "preview_url": "http://example.com/flashcards/thumbnail",
+    "release_date" : "2024",
+    "average_duration" : 20,
+    "focus" : "Learning activity"
   },
   {
     "id": 2,
     "name": "Quiz",
     "description": "A study activity using quizzes to test vocabulary knowledge.",
     "url": "https://example.com/quiz",
-    "preview_url": "http://example.com/quiz/thumbnail"
+    "preview_url": "http://example.com/quiz/thumbnail",
+    "release_date": "2023",
+    "average_duration": 15,
+    "focus": "Assessment"
   }
 ]
 ```
@@ -205,7 +211,10 @@ Returns details of a specific study activity.
   "name": "Flashcards",
   "description": "A study activity using flashcards to learn vocabulary.",
   "url": "https://example.com/flashcards",
-  "preview_url": "http://example.com/flashcards/thumbnail"
+  "preview_url": "http://example.com/flashcards/thumbnail",
+  "release_date" : "2024",
+  "average_duration" : 20,
+  "focus" : "Learning activity"
 }
 ```
 
@@ -254,7 +263,10 @@ Returns details of a specific study activity including all groups available for 
     "name": "Flashcards",
     "description": "A study activity using flashcards to learn vocabulary.",
     "url": "http://example.com/activities/flashcards",
-    "preview_url": "http://example.com/previews/flashcards.jpg"
+    "preview_url": "http://example.com/previews/flashcards.jpg",
+    "release_date" : "2024",
+    "average_duration" : 20,
+    "focus" : "Learning activity"
   },
   "groups": [
     {

@@ -17,6 +17,10 @@ export const studySessionsService = {
     return get<PaginatedResponse<StudySession>>(url);
   },
   
+  getById: (id: number) => {
+    return get<StudySession>(`/api/study_sessions/${id}`);
+  },
+  
   resetHistory: () => {
     return post<ResetResponse>('/api/study_sessions/reset_history', {});
   }

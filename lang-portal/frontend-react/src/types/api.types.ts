@@ -65,6 +65,9 @@ export interface StudyActivity {
   description: string;
   url: string;
   preview_url: string;
+  release_date: string;
+  average_duration: number;
+  focus: string;
 }
 
 export interface StudyActivityLaunchResponse {
