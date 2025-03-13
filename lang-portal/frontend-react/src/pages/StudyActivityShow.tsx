@@ -116,10 +116,12 @@ const StudyActivityShow = () => {
         
         <Button 
           className="flex items-center gap-1.5" 
-          onClick={() => window.open(`/study_activities/${id}/launch`, "_blank")}
+          asChild
         >
-          <ExternalLink size={16} />
-          Launch Activity
+          <Link to={`/study_activities/${id}/launch`}>
+            <ExternalLink size={16} />
+            Launch Activity
+          </Link>
         </Button>
       </div>
       
