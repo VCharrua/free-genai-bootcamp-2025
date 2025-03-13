@@ -45,7 +45,7 @@ def test_all_routes_return_valid_response(client, auth_headers):
         '/api/words',
         '/api/groups', 
         '/api/study_sessions',
-        '/api/study-activities'
+        '/api/study_activities'
     ]
     
     for route in routes:

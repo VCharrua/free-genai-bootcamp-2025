@@ -6,7 +6,7 @@ PAGINATED_ENDPOINTS = [
     '/api/words',
     '/api/groups', 
     '/api/study_sessions',
-    '/api/study-activities'  # Note: Using hyphen as per your README
+    '/api/study_activities'  # Note: Using hyphen as per your README
 ]
 
 # Group-specific paginated endpoints require a valid group ID
@@ -83,9 +83,9 @@ def test_group_paginated_endpoints(client):
 def test_activity_paginated_endpoints(client):
     """Test activity-specific endpoints that return paginated results."""
     # First, get a valid activity ID
-    response = client.get('/api/study-activities')
+    response = client.get('/api/study_activities')
     if response.status_code != 200:
-        pytest.skip("Could not access /api/study-activities endpoint")
+        pytest.skip("Could not access /api/study_activities endpoint")
         
     data = json.loads(response.data)
     

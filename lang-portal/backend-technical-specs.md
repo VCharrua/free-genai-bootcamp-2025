@@ -99,10 +99,12 @@ Returns information about the most recent study session.
 {
   "id": 1,
   "group_id": 1,
-  "created_at": "2023-10-01T12:00:00Z",
+  "start_time": "2023-10-01T11:00:00Z",
+  "end_time": "2023-10-01T12:00:00Z",
   "activity_name": "Flashcards",
+  "group_name": "Basic Vocabulary",
   "correct_count": 20,
-  "wrong_count": 4    
+  "wrong_count": 4
 }
 ```
 
@@ -115,6 +117,7 @@ Please note that the frontend will determine the progress bar based on the total
 {
   "total_words": 100,
   "studied_words": 50,
+  "studied_words_trend": 11
 }
 ```
 
@@ -125,6 +128,7 @@ Returns quick overview statistics.
 ```json
 {
   "success_rate": 80.0,
+  "success_rate_trend": 10.0,
   "total_study_sessions": 4,
   "total_active_groups": 3,
   "study_streak_days": 4
@@ -143,8 +147,32 @@ Performs a full reset of the database.
 ```
 
 
+### GET /api/dashboard/performance_graph
+Returns performance statistics for the last 31 days.
 
-###  GET /api/study-activities
+#### JSON Response
+```json
+[
+  {
+    "id": 1,
+    "start_time": "2023-10-01",
+    "review_items_count": 24,
+    "correct_count": 20,
+    "wrong_count": 4
+  },
+  {
+    "id": 2,
+    "start_time": "2023-10-02",
+    "review_items_count": 13,
+    "correct_count": 10,
+    "wrong_count": 3
+  }
+]
+```
+
+
+
+###  GET /api/study_activities
 Returns a list of study activities.
 
 #### JSON Response
@@ -154,13 +182,21 @@ Returns a list of study activities.
     "id": 1,
     "name": "Flashcards",
     "description": "A study activity using flashcards to learn vocabulary.",
-    "thumbnail_url": "http://example.com/flashcards/thumbnail"
+    "url": "https://example.com/flashcards",
+    "preview_url": "http://example.com/flashcards/thumbnail",
+    "release_date" : "2024",
+    "average_duration" : 20,
+    "focus" : "Learning activity"
   },
   {
     "id": 2,
     "name": "Quiz",
     "description": "A study activity using quizzes to test vocabulary knowledge.",
-    "thumbnail_url": "http://example.com/quiz/thumbnail"
+    "url": "https://example.com/quiz",
+    "preview_url": "http://example.com/quiz/thumbnail",
+    "release_date": "2023",
+    "average_duration": 15,
+    "focus": "Assessment"
   }
 ]
 ```
@@ -174,7 +210,11 @@ Returns details of a specific study activity.
   "id": 1,
   "name": "Flashcards",
   "description": "A study activity using flashcards to learn vocabulary.",
-  "thumbnail_url": "http://example.com/flashcards/thumbnail"
+  "url": "https://example.com/flashcards",
+  "preview_url": "http://example.com/flashcards/thumbnail",
+  "release_date" : "2024",
+  "average_duration" : 20,
+  "focus" : "Learning activity"
 }
 ```
 
@@ -223,7 +263,10 @@ Returns details of a specific study activity including all groups available for 
     "name": "Flashcards",
     "description": "A study activity using flashcards to learn vocabulary.",
     "url": "http://example.com/activities/flashcards",
-    "preview_url": "http://example.com/previews/flashcards.jpg"
+    "preview_url": "http://example.com/previews/flashcards.jpg",
+    "release_date" : "2024",
+    "average_duration" : 20,
+    "focus" : "Learning activity"
   },
   "groups": [
     {
@@ -361,7 +404,10 @@ Returns details of a specific group.
   "id": 1,
   "name": "Basic Vocabulary",
   "stats": {
-    "total_words_count": 50
+    "total_words_count": 50,
+    "group_review_count": 120,          // Total review items for this group
+    "total_review_count": 450,          // Total review items across all groups
+    "reviewed_percentage": 26.7         // Percentage of all reviews from this group  
   }
 }
 ```
@@ -518,18 +564,24 @@ Returns a list of study sessions.
     {
       "id": 1,
       "activity_name": "Flashcards",
+      "group_id": 1,
       "group_name": "Basic Vocabulary",
       "start_time": "2023-10-01T12:00:00Z",
       "end_time": "2023-10-01T12:05:00Z",
-      "review_items_count": 20
+      "review_items_count": 20,
+      "correct_count": 15,
+      "wrong_count": 5
     },
     {
       "id": 2,
       "activity_name": "Quiz",
+      "group_id": 2,
       "group_name": "Advanced Vocabulary",
       "start_time": "2023-10-02T12:00:00Z",
       "end_time": "2023-10-02T12:30:00Z",
-      "review_items_count": 10
+      "review_items_count": 10,
+      "correct_count": 8,
+      "wrong_count": 2
     }
   ]
 }
@@ -543,12 +595,41 @@ Returns details of a specific study session.
 {
   "id": 1,
   "activity_name": "Flashcards",
+  "group_id": 1,
   "group_name": "Basic Vocabulary",
   "start_time": "2023-10-01T12:00:00Z",
   "end_time": "2023-10-01T12:05:00Z",
-  "review_items_count": 20
+  "review_items_count": 20,
+  "correct_count": 15,
+  "wrong_count": 5
 }
 ```
+
+###  GET /api/study_sessions/continue_learning
+Returns a list of 3 study sessions that the user should continue learning, where the words reviewed are less than the number of words in the group.
+
+#### JSON Response
+```json
+[
+  {
+    "id": 1,
+    "activity_id": 1,
+    "group_id": 1,
+    "group_name": "Basic Vocabulary",
+    "review_items_count": 7,
+    "total_words_count": 10
+  },
+  {
+    "id": 2,
+    "activity_id": 1,
+    "group_id": 2,
+    "group_name": "Advanced Vocabulary",
+    "review_items_count": 2,
+    "total_words_count": 7
+  }
+]
+```
+
 
 ###  GET /api/study_sessions/:id/words
 Returns a list of words reviewed in a specific study session.

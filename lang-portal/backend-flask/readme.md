@@ -76,7 +76,7 @@ The database consists of the following tables:
 
 ### Study Activities
 
-- `GET /api/study-activities` - List all study activities
+- `GET /api/study_activities` - List all study activities
 - `GET /api/study_activities/:id` - Get details of a specific study activity
 - `GET /api/study_activities/:id/launch` - Get launch info including available groups
 - `GET /api/study_activities/:id/study_sessions` - Get study sessions for an activity
@@ -127,10 +127,19 @@ The database consists of the following tables:
    ```
    python -m invoke setup
    ```
-   This command will:
-   - Initialize the database
-   - Run all migrations
-   - Seed the database with sample data
+
+The setup process will initialize the database with essential data. If you want to include additional demo data (study sessions and word review items), you can set the `FLASK_DEMO` environment variable:
+
+```bash
+# To include demo data (study sessions and word review history)
+export FLASK_DEMO=true
+python -m invoke setup
+
+# To setup without demo data (default)
+python -m invoke setup
+```
+
+Demo data includes sample study sessions and word review records that simulate user activity, useful for testing dashboard statistics and learning progress features.
 
 ### Running the Application
 

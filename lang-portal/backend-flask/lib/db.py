@@ -147,6 +147,28 @@ def seed_data():
             except Exception as e:
                 logger.error(f"Failed to seed word group '{group_name}' from {file_name}: {e}")
                 raise
+        
+        # Seed study sessions
+        if Config.isDemo:
+            try:
+                seed_study_sessions(seeds_dir)
+            except Exception as e:
+                logger.error(f"Failed to seed study sessions: {e}")
+                raise
+        else:
+            logger.info("Skipping study sessions seeding (not in demo mode)")
+            print("Skipping study sessions seeding (not in demo mode)")
+            
+        # Seed word review items
+        if Config.isDemo:
+            try:
+                seed_word_review_items(seeds_dir)
+            except Exception as e:
+                logger.error(f"Failed to seed word review items: {e}")
+                raise
+        else:
+            logger.info("Skipping word review items seeding (not in demo mode)")
+            print("Skipping word review items seeding (not in demo mode)")
                 
     except Exception as e:
         logger.error(f"Seeding error: {e}")
@@ -165,8 +187,9 @@ def seed_study_activities(seeds_dir):
             activities = json.load(f)
             for activity in activities:
                 execute_db(
-                    "INSERT INTO study_activities (name, url, preview_url) VALUES (?, ?, ?)",
-                    (activity['name'], activity['url'], activity['preview_url'])
+                    "INSERT INTO study_activities (name, description, url, preview_url, release_date, average_duration, focus) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    (activity['name'], activity['description'], activity['url'], activity['preview_url'], 
+                     activity['release_date'], activity['average_duration'], activity['focus'])
                 )
         logger.info("Seeded study activities")
         print("Seeded study activities")
@@ -241,3 +264,59 @@ def seed_word_group(seeds_dir, file_name, group_name):
     finally:
         if conn:
             conn.close()
+
+def seed_study_sessions(seeds_dir):
+    """Seed study sessions from a JSON file."""
+    study_sessions_file = os.path.join(seeds_dir, 'study_sessions.json')
+    if not os.path.exists(study_sessions_file):
+        logger.warning(f"Study sessions file not found: {study_sessions_file}")
+        print(f"Study sessions file not found: {study_sessions_file}")
+        return
+        
+    try:
+        with open(study_sessions_file, 'r') as f:
+            sessions = json.load(f)
+            for session in sessions:
+                execute_db(
+                    "INSERT INTO study_sessions (id, group_id, study_activity_id, created_at) VALUES (?, ?, ?, ?)",
+                    (session['id'], session['group_id'], session['study_activity_id'], session['created_at'])
+                )
+        logger.info("Seeded study sessions")
+        print("Seeded study sessions")
+    except json.JSONDecodeError as e:
+        logger.error(f"Invalid JSON in study sessions file: {e}")
+        raise Exception(f"Invalid JSON in study sessions file: {e}")
+    except IOError as e:
+        logger.error(f"Failed to read study sessions file: {e}")
+        raise Exception(f"Failed to read study sessions file: {e}")
+    except KeyError as e:
+        logger.error(f"Missing required key in study sessions data: {e}")
+        raise Exception(f"Missing required key in study sessions data: {e}")
+
+def seed_word_review_items(seeds_dir):
+    """Seed word review items from a JSON file."""
+    word_review_items_file = os.path.join(seeds_dir, 'word_review_items.json')
+    if not os.path.exists(word_review_items_file):
+        logger.warning(f"Word review items file not found: {word_review_items_file}")
+        print(f"Word review items file not found: {word_review_items_file}")
+        return
+        
+    try:
+        with open(word_review_items_file, 'r') as f:
+            items = json.load(f)
+            for item in items:
+                execute_db(
+                    "INSERT INTO word_review_items (id, word_id, study_session_id, correct, created_at) VALUES (?, ?, ?, ?, ?)",
+                    (item['id'], item['word_id'], item['study_session_id'], item['correct'], item['created_at'])
+                )
+        logger.info("Seeded word review items")
+        print("Seeded word review items")
+    except json.JSONDecodeError as e:
+        logger.error(f"Invalid JSON in word review items file: {e}")
+        raise Exception(f"Invalid JSON in word review items file: {e}")
+    except IOError as e:
+        logger.error(f"Failed to read word review items file: {e}")
+        raise Exception(f"Failed to read word review items file: {e}")
+    except KeyError as e:
+        logger.error(f"Missing required key in word review items data: {e}")
+        raise Exception(f"Missing required key in word review items data: {e}")
