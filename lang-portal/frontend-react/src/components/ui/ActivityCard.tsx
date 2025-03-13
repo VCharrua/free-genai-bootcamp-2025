@@ -14,10 +14,15 @@ interface ActivityCardProps {
 }
 
 const ActivityCard = ({ id, title, thumbnail, className, style }: ActivityCardProps) => {
+  
+  //TODO: Remover esta função
+  /*
   const handleLaunch = (groupId = 4) => {
     // Open in a new tab
     window.open(`/study_activities/${id}/launch?group_id=${groupId}`, "_blank");
   };
+  */
+
 
   return (
     <Card className={cn(
@@ -41,10 +46,13 @@ const ActivityCard = ({ id, title, thumbnail, className, style }: ActivityCardPr
           variant="default" 
           size="sm"
           className="transition-all duration-300 gap-1.5"
-          onClick={() => handleLaunch()}
+          //onClick={() => handleLaunch()}
+          asChild
         >
-          <ExternalLink size={15} />
-          Launch
+          <Link to={`/study_activities/${id}/launch`}>
+            <ExternalLink size={15} />
+            Launch
+          </Link>
         </Button>
         
         <Button 

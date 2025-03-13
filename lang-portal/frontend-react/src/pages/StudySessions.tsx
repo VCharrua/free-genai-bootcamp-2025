@@ -1,68 +1,74 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import DataTable from "@/components/ui/DataTable";
-import { studySessions } from "@/data/mockData";
 import { Badge } from "@/components/ui/badge";
+import { useStudySessions } from "@/hooks/study-sessions/useStudySessions";
 
 const StudySessions = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const [mounted, setMounted] = useState(false);
+  const { 
+    items: sessions, 
+    pagination, 
+    loading, 
+    error, 
+    page,
+    handlePageChange 
+  } = useStudySessions();
   
-  // Calculate pagination
-  const totalPages = Math.ceil(studySessions.length / itemsPerPage);
-  const paginatedSessions = studySessions.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  if (loading) return <div><h2 className="text-xl font-semibold tracking-tight text-muted-foreground">Loading study sessions...</h2></div>;
+  if (error) return <div><h2 className="text-xl font-semibold tracking-tight text-muted-foreground">Error loading study sessions</h2></div>;
   
   const columns = [
     {
-      key: "studyActivityName",
+      key: "activity_name",
       header: "Activity Name",
       sortable: true,
       cell: (session: any) => (
         <Link 
-          to={`/study_activities/${session.studyActivityId}`} 
+          to={`/study_activities/${session.study_activity_id}`} 
           className="font-medium text-foreground hover:text-primary transition-colors"
         >
-          {session.studyActivityName}
+          {session.activity_name}
         </Link>
       ),
     },
     {
-      key: "groupName",
+      key: "group_name",
       header: "Group Name",
       sortable: true,
       cell: (session: any) => (
         <Link 
-          to={`/groups/${session.groupId}`}
+          to={`/groups/${session.group_id}`}
           className="font-medium text-primary hover:underline"
         >
-          {session.groupName}
+          {session.group_name}
         </Link>
       ),
     },
     {
-      key: "startTime",
+      key: "created_at",
       header: "Start Time",
       sortable: true,
-      cell: (session: any) => <span>{session.startTime}</span>,
+      cell: (session: any) => <span>{new Date(session.created_at).toLocaleString()}</span>,
     },
     {
-      key: "endTime",
+      key: "end_time",
       header: "End Time",
       sortable: true,
-      cell: (session: any) => <span>{session.endTime}</span>,
+      cell: (session: any) => <span>{session.end_time ? new Date(session.end_time).toLocaleString() : 'N/A'}</span>,
     },
     {
-      key: "reviewItemsCount",
+      key: "review_items_count",
       header: "Review Items",
       sortable: true,
       cell: (session: any) => (
         <Badge variant="outline">
-          {session.reviewItemsCount}
+          {session.correct_count + session.wrong_count}
         </Badge>
       ),
     },
@@ -79,14 +85,8 @@ const StudySessions = () => {
     },
   ];
   
-  const pagination = {
-    currentPage,
-    totalPages,
-    onPageChange: setCurrentPage,
-  };
-  
   return (
-    <div className="animate-fade-in">
+    <div className={`${mounted ? 'animate-fade-in' : 'opacity-0'}`}>
       <div className="mb-6">
         <h1 className="text-2xl font-bold">Study Sessions</h1>
         <p className="text-muted-foreground mt-1">
@@ -95,9 +95,13 @@ const StudySessions = () => {
       </div>
       
       <DataTable 
-        data={paginatedSessions} 
-        columns={columns} 
-        pagination={pagination}
+        data={sessions} 
+        columns={columns}
+        pagination={{
+          currentPage: page,
+          totalPages: pagination?.total_pages || 1,
+          onPageChange: handlePageChange
+        }}
       />
     </div>
   );

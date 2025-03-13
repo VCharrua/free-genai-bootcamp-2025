@@ -1,21 +1,27 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import DataTable from "@/components/ui/DataTable";
-import { groups } from "@/data/mockData";
 import { Badge } from "@/components/ui/badge";
 import { Folder } from "lucide-react";
+import { useGroups } from "@/hooks/groups/useGroups";
 
 const Groups = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const [mounted, setMounted] = useState(false);
+  const { 
+    items: groups, 
+    pagination, 
+    loading, 
+    error, 
+    page,
+    handlePageChange
+  } = useGroups();
   
-  // Calculate pagination
-  const totalPages = Math.ceil(groups.length / itemsPerPage);
-  const paginatedGroups = groups.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  if (loading) return <div><h2 className="text-xl font-semibold tracking-tight text-muted-foreground">Loading groups...</h2></div>;
+  if (error) return <div><h2 className="text-xl font-semibold tracking-tight text-muted-foreground">Error loading groups data</h2></div>;
   
   const columns = [
     {
@@ -37,25 +43,19 @@ const Groups = () => {
       ),
     },
     {
-      key: "wordCount",
+      key: "words_count",
       header: "Words Count",
       sortable: true,
       cell: (group: any) => (
         <Badge variant="outline" className="bg-primary/5 border-primary/20">
-          {group.wordCount} {group.wordCount === 1 ? "word" : "words"}
+          {group.words_count} {group.words_count === 1 ? "word" : "words"}
         </Badge>
       ),
     },
   ];
   
-  const pagination = {
-    currentPage,
-    totalPages,
-    onPageChange: setCurrentPage,
-  };
-  
   return (
-    <div className="animate-fade-in">
+    <div className={`${mounted ? 'animate-fade-in' : 'opacity-0'}`}>
       <div className="mb-6">
         <h1 className="text-2xl font-bold">Word Groups</h1>
         <p className="text-muted-foreground mt-1">
@@ -64,9 +64,13 @@ const Groups = () => {
       </div>
       
       <DataTable 
-        data={paginatedGroups} 
-        columns={columns} 
-        pagination={pagination}
+        data={groups} 
+        columns={columns}
+        pagination={{
+          currentPage: page,
+          totalPages: pagination?.total_pages || 1,
+          onPageChange: handlePageChange
+        }}
       />
     </div>
   );

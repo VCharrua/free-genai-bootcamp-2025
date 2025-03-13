@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
@@ -6,19 +5,36 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import DataTable from "@/components/ui/DataTable";
 import SoundButton from "@/components/ui/SoundButton";
-import { getGroupById, getWordsByGroupId } from "@/data/mockData";
 import { Badge } from "@/components/ui/badge";
+import { useGroup, useGroupWords } from "@/hooks/groups/useGroups";
 
 const GroupShow = () => {
   const { id } = useParams<{ id: string }>();
   const [mounted, setMounted] = useState(false);
   
+  const { group, loading: loadingGroup, error: groupError } = useGroup(Number(id));
+  const { 
+    items: words, 
+    pagination, 
+    loading: loadingWords, 
+    error: wordsError, 
+    page,
+    handlePageChange 
+  } = useGroupWords(Number(id));
+  
   useEffect(() => {
     setMounted(true);
   }, []);
   
-  const group = getGroupById(Number(id));
+  // Loading states
+  if (loadingGroup || loadingWords) 
+    return <div><h2 className="text-xl font-semibold tracking-tight text-muted-foreground">Loading group data...</h2></div>;
   
+  // Error states
+  if (groupError) 
+    return <div><h2 className="text-xl font-semibold tracking-tight text-muted-foreground">Error loading group</h2></div>;
+  
+  // Group not found
   if (!group) {
     return (
       <div className="flex flex-col items-center justify-center p-8 text-center">
@@ -29,8 +45,6 @@ const GroupShow = () => {
       </div>
     );
   }
-  
-  const words = getWordsByGroupId(Number(id));
   
   const columns = [
     {
@@ -67,22 +81,22 @@ const GroupShow = () => {
       cell: (word: any) => <span>{word.english}</span>,
     },
     {
-      key: "correctCount",
+      key: "correct_count",
       header: "Correct Count",
       sortable: true,
       cell: (word: any) => (
         <Badge variant="outline" className="bg-green-50 text-green-600 hover:bg-green-50 border-green-200">
-          {word.correctCount}
+          {word.correct_count}
         </Badge>
       ),
     },
     {
-      key: "wrongCount",
+      key: "wrong_count",
       header: "Wrong Count",
       sortable: true,
       cell: (word: any) => (
         <Badge variant="outline" className="bg-red-50 text-red-600 hover:bg-red-50 border-red-200">
-          {word.wrongCount}
+          {word.wrong_count}
         </Badge>
       ),
     },
@@ -113,12 +127,12 @@ const GroupShow = () => {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <h3 className="text-sm font-medium text-muted-foreground mb-1">Total Words</h3>
-              <span className="text-lg font-medium">{group.wordCount}</span>
+              <span className="text-lg font-medium">{group.stats.total_words_count}</span>
             </div>
             
             <div>
-              <h3 className="text-sm font-medium text-muted-foreground mb-1">Category</h3>
-              <span className="text-lg font-medium">Vocabulary</span>
+              <h3 className="text-sm font-medium text-muted-foreground mb-1">Group Review Percentage</h3>
+              <span className="text-lg font-medium">{group.stats.reviewed_percentage || 0}%</span>
             </div>
           </div>
         </CardContent>
@@ -127,7 +141,19 @@ const GroupShow = () => {
       <div>
         <h2 className="text-xl font-semibold mb-4">Words in this Group</h2>
         
-        <DataTable data={words} columns={columns} />
+        {wordsError ? (
+          <div className="text-red-500">Error loading words</div>
+        ) : (
+          <DataTable 
+            data={words} 
+            columns={columns} 
+            pagination={{
+              currentPage: page,
+              totalPages: pagination?.total_pages || 1,
+              onPageChange: handlePageChange
+            }}
+          />
+        )}
       </div>
     </div>
   );

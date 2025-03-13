@@ -27,7 +27,7 @@ const Dashboard = () => {
   }, []);
   
   if (isLoading) return <div><h2 className="text-xl font-semibold tracking-tight text-muted-foreground">Loading dashboard data...</h2></div>;
-  if (error) return <div>Error loading dashboard data</div>;
+  if (error) return <div><h2 className="text-xl font-semibold tracking-tight text-muted-foreground">Error loading dashboard data</h2></div>;
 
   return (
     <div className={`space-y-8 ${mounted ? 'animate-fade-in' : 'opacity-0'}`}>

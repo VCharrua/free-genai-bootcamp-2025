@@ -392,7 +392,10 @@ Returns details of a specific group.
   "id": 1,
   "name": "Basic Vocabulary",
   "stats": {
-    "total_words_count": 50
+    "total_words_count": 50,
+    "group_review_count": 120,          // Total review items for this group
+    "total_review_count": 450,          // Total review items across all groups
+    "reviewed_percentage": 26.7         // Percentage of all reviews from this group  
   }
 }
 ```

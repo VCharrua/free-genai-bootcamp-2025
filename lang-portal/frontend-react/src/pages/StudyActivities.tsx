@@ -1,14 +1,19 @@
-
 import { useState, useEffect } from "react";
-import { studyActivities } from "@/data/mockData";
+import { useNavigate } from "react-router-dom";
 import ActivityCard from "@/components/ui/ActivityCard";
+import { useStudyActivities } from "@/hooks/study-activities/useStudyActivities";
 
 const StudyActivities = () => {
   const [mounted, setMounted] = useState(false);
+  const { activities, loading, error } = useStudyActivities();
+  const navigate = useNavigate();
   
   useEffect(() => {
     setMounted(true);
   }, []);
+  
+  if (loading) return <div><h2 className="text-xl font-semibold tracking-tight text-muted-foreground">Loading activities...</h2></div>;
+  if (error) return <div><h2 className="text-xl font-semibold tracking-tight text-muted-foreground">Error loading activities</h2></div>;
   
   return (
     <div className={mounted ? 'animate-fade-in' : 'opacity-0'}>
@@ -20,12 +25,12 @@ const StudyActivities = () => {
       </div>
       
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {studyActivities.map((activity, index) => (
+        {activities.map((activity, index) => (
           <ActivityCard
             key={activity.id}
             id={activity.id}
-            title={activity.title}
-            thumbnail={activity.thumbnail}
+            title={activity.name}
+            thumbnail={activity.preview_url}
             className="animate-fade-in"
             style={{ animationDelay: `${index * 100}ms` }}
           />

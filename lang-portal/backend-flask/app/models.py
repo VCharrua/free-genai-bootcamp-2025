@@ -84,8 +84,30 @@ class Group:
         if not group:
             return None
         
+        # Count of review items for this group
+        group_review_count = query_db("""
+            SELECT COUNT(*) as count 
+            FROM word_review_items wri
+            JOIN words_groups wg ON wri.word_id = wg.word_id
+            WHERE wg.group_id = ?
+        """, (group_id,), one=True)['count']
+        
+        # Total count of review items across all groups
+        total_review_count = query_db("""
+            SELECT COUNT(*) as count 
+            FROM word_review_items
+        """, one=True)['count']
+        
+        # Calculate the percentage
+        reviewed_percentage = 0
+        if total_review_count > 0:
+            reviewed_percentage = (group_review_count / total_review_count) * 100
+        
         stats = {
-            'total_words_count': group['words_count']
+            'total_words_count': group['words_count'],
+            'group_review_count': group_review_count,
+            'total_review_count': total_review_count,
+            'reviewed_percentage': round(reviewed_percentage, 1)  # Round to 1 decimal place
         }
         
         group['stats'] = stats

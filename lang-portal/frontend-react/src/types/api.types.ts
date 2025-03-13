@@ -127,6 +127,9 @@ export interface GroupDetail {
   name: string;
   stats: {
     total_words_count: number;
+    group_review_count: number;
+    total_review_count: number;
+    reviewed_percentage: number;
   };
 }
 
