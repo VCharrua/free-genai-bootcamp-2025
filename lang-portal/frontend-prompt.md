@@ -40,7 +40,7 @@ Each of these routes are a page and we'll describe them in more details under th
 
 - /dashboard
 - /settings
-- /study-activities
+- /study_activities
 - /study_activities/:id
 - /study_activities/:id/launch
 - /words
@@ -226,7 +226,7 @@ Returns recent incomplete study sessions.
 
 ### PAGE: Study Activity Index
 
-The route for this page /study-activities
+The route for this page /study_activities
 
 This is a grade of cards which represent study activities.
 
@@ -247,7 +247,7 @@ The view button will go to the study activity show page.
 
 #### Backend API calls for `Study Activity Index` cards
 Cards will get data from the following endpoint:
-- GET /api/study-activities
+- GET /api/study_activities
 
 ##### JSON Response
 ```json
@@ -381,18 +381,24 @@ This page will use the :id route param to call the following endpoints:
     {
       "id": 1,
       "activity_name": "Flashcards",
+      "group_id": 1,
       "group_name": "Basic Vocabulary",
       "start_time": "2023-10-01T12:00:00Z",
       "end_time": "2023-10-01T12:05:00Z",
-      "review_items_count": 20
+      "review_items_count": 20,
+      "correct_count": 15,
+      "wrong_count": 5  
     },
     {
       "id": 2,
       "activity_name": "Flashcards",
+      "group_id": 2,
       "group_name": "Advanced Vocabulary",
       "start_time": "2023-10-02T12:00:00Z",
       "end_time": "2023-10-02T12:30:00Z",
-      "review_items_count": 10
+      "review_items_count": 10,
+      "correct_count": 8,
+      "wrong_count": 2  
     }
   ]
 }
@@ -699,18 +705,101 @@ Returns a list of study sessions by calling the following endpoint:
     {
       "id": 1,
       "activity_name": "Flashcards",
+      "group_id": 1,
       "group_name": "Basic Vocabulary",
       "start_time": "2023-10-01T12:00:00Z",
       "end_time": "2023-10-01T12:05:00Z",
-      "review_items_count": 20
+      "review_items_count": 20,
+      "correct_count": 15,
+      "wrong_count": 5  
     },
     {
       "id": 2,
       "activity_name": "Quiz",
+      "group_id": 2,
       "group_name": "Advanced Vocabulary",
       "start_time": "2023-10-02T12:00:00Z",
       "end_time": "2023-10-02T12:30:00Z",
-      "review_items_count": 10
+      "review_items_count": 10,
+      "correct_count": 8,
+      "wrong_count": 2  
+    }
+  ]
+}
+```
+
+### PAGE: Study Session Show
+
+The route for this page /study_sessions/:id
+
+This page will have a information section with the following information:
+- activity name
+- group name
+- start time
+- end time
+- review items count
+- correct count
+- wrong count
+
+The page will have a table/list of word reviews for the study session similar to the list in the study activity show page with the following columns:
+- Portuguese
+- Kimbundu
+- English
+- Correct Count
+- Wrong Count
+
+A click on the portuguese or kimbundu will take us to the word show page
+
+This page contains the same sorting and pagination logic as the Word Index page
+
+#### Backend API calls for the information section in `Study Session Show`
+Returns the details of a study_session by calling the following endpoint:
+- GET /api/study_sessions/:id
+
+##### JSON Response
+```json
+{
+  "id": 1,
+  "activity_name": "Flashcards",
+  "group_id": 1,
+  "group_name": "Basic Vocabulary",
+  "start_time": "2023-10-01T12:00:00Z",
+  "end_time": "2023-10-01T12:05:00Z",
+  "review_items_count": 20,
+  "correct_count": 15,
+  "wrong_count": 5
+}
+```
+
+#### Backend API calls for the list of word reviews in `Study Session Show`
+Returns a list of word reviews for the study session by calling the following endpoint:
+- GET /api/study_sessions/:id/words
+
+##### JSON Response
+```json
+{
+  "pagination": {
+    "page": 1,
+    "per_page": 100,
+    "total": 2,
+    "total_pages": 1
+  },
+  "items": [
+    {
+      "id": 1,
+      "portuguese": "água",
+      "kimbundu": "maza",
+      "english": "water",
+      "correct_count": 10,
+      "wrong_count": 2
+    },
+    {
+      "id": 2,
+      "portuguese": "escola",
+      "kimbundu": "xikola",
+      "english": "school",
+      "correct_count": 5,
+      "wrong_count": 1
     }
   ]
 }

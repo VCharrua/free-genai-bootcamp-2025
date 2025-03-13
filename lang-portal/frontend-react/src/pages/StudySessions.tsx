@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import DataTable from "@/components/ui/DataTable";
 import { Badge } from "@/components/ui/badge";
-import { useStudySessions } from "@/hooks/study-sessions/useStudySessions";
+import { useStudySessions } from "@/hooks/study_sessions/useStudySessions";
 
 const StudySessions = () => {
   const [mounted, setMounted] = useState(false);

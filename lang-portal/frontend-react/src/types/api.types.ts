@@ -78,10 +78,13 @@ export interface StudyActivityLaunchResponse {
 export interface StudySession {
   id: number;
   activity_name: string;
+  group_id: number;
   group_name: string;
   start_time: string;
   end_time: string;
   review_items_count: number;
+  correct_count: number;
+  wrong_count: number;
 }
 
 export interface GroupStudySession {

@@ -203,7 +203,7 @@ const Dashboard = () => {
             </CardContent>
             <CardFooter>
               <Button className="w-full" asChild>
-                <Link to="/study-activities">
+                <Link to="/study_activities">
                   Start a New Session
                 </Link>
               </Button>

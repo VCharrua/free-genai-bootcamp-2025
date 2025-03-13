@@ -1,4 +1,3 @@
-
 import { ExternalLink, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -15,15 +14,6 @@ interface ActivityCardProps {
 
 const ActivityCard = ({ id, title, thumbnail, className, style }: ActivityCardProps) => {
   
-  //TODO: Remover esta função
-  /*
-  const handleLaunch = (groupId = 4) => {
-    // Open in a new tab
-    window.open(`/study_activities/${id}/launch?group_id=${groupId}`, "_blank");
-  };
-  */
-
-
   return (
     <Card className={cn(
       "overflow-hidden card-hover",
@@ -46,7 +36,6 @@ const ActivityCard = ({ id, title, thumbnail, className, style }: ActivityCardPr
           variant="default" 
           size="sm"
           className="transition-all duration-300 gap-1.5"
-          //onClick={() => handleLaunch()}
           asChild
         >
           <Link to={`/study_activities/${id}/launch`}>

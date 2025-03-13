@@ -1,5 +1,6 @@
 import { get } from './api.service';
 import { 
+  GroupDetail,
   PaginatedResponse,
   Word,
   WordDetail

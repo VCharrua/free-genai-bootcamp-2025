@@ -46,11 +46,11 @@ Each feature area has its own service file that contains functions for making AP
 
 ### Study Activities
 
-**Service File**: `src/services/study-activities.service.ts`
+**Service File**: `src/services/study_activities.service.ts`
 
 | Function | API Endpoint | Description |
 |----------|-------------|-------------|
-| `getAll` | GET `/api/study-activities` | Fetches all available study activities |
+| `getAll` | GET `/api/study_activities` | Fetches all available study activities |
 | `getById` | GET `/api/study_activities/:id` | Fetches a single study activity by ID |
 | `getLaunchData` | GET `/api/study_activities/:id/launch` | Fetches data needed to launch a study activity |
 | `getStudySessions` | GET `/api/study_activities/:id/study_sessions` | Fetches study sessions for an activity |
@@ -78,7 +78,7 @@ Each feature area has its own service file that contains functions for making AP
 
 ### Study Sessions
 
-**Service File**: `src/services/study-sessions.service.ts`
+**Service File**: `src/services/study_sessions.service.ts`
 
 | Function | API Endpoint | Description |
 |----------|-------------|-------------|
@@ -110,7 +110,7 @@ This hook aggregates data from multiple dashboard API endpoints and provides uni
 
 ### Study Activities
 
-**Hook File**: `src/hooks/study-activities/useStudyActivities.ts`
+**Hook File**: `src/hooks/study_activities/useStudyActivities.ts`
 
 ```typescript
 // List all study activities
@@ -205,7 +205,7 @@ const {
 
 ### Study Sessions
 
-**Hook File**: `src/hooks/study-sessions/useStudySessions.ts`
+**Hook File**: `src/hooks/study_sessions/useStudySessions.ts`
 
 ```typescript
 // List all study sessions

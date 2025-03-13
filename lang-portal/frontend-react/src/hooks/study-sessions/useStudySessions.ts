@@ -1,4 +1,4 @@
-import { studySessionsService } from '../../services/study-sessions.service';
+import { studySessionsService } from '../../services/study_sessions.service';
 import { usePagination } from '../usePagination';
 import { useState } from 'react';
 import { useApi } from '../useApi';
@@ -27,6 +27,15 @@ export function useStudySession(id: number) {
     loading,
     error
   };
+}
+
+/**
+ * Hook for fetching words reviewed in a study session with pagination
+ */
+export function useStudySessionWords(id: number) {
+  return usePagination(
+    (page, sortBy, sortDirection) => studySessionsService.getSessionWords(id, page, sortBy, sortDirection)
+  );
 }
 
 /**

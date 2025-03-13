@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { CheckCircle, XCircle, ChevronLeft } from "lucide-react";
@@ -7,19 +6,30 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import SoundButton from "@/components/ui/SoundButton";
-import { getWordById, getGroupsForWord } from "@/data/mockData";
+import { useWord } from "@/hooks/words/useWords";
 
 const WordShow = () => {
   const { id } = useParams<{ id: string }>();
   const [mounted, setMounted] = useState(false);
   
+  // Fetch word using hook instead of mock data
+  const { word, loading, error } = useWord(Number(id));
+  
   useEffect(() => {
     setMounted(true);
   }, []);
   
-  const word = getWordById(Number(id));
-  const groups = getGroupsForWord(Number(id));
+  // Handle loading state
+  if (loading) {
+    return <div><h2 className="text-xl font-semibold tracking-tight text-muted-foreground">Loading word data...</h2></div>;
+  }
   
+  // Handle error state
+  if (error) {
+    return <div><h2 className="text-xl font-semibold tracking-tight text-muted-foreground">Error loading word data</h2></div>;
+  }
+  
+  // Word not found
   if (!word) {
     return (
       <div className="flex flex-col items-center justify-center p-8 text-center">
@@ -30,9 +40,12 @@ const WordShow = () => {
       </div>
     );
   }
+
+  // Extract groups from the word object
+  const groups = word.groups || [];
   
-  const accuracy = word.correctCount + word.wrongCount > 0
-    ? Math.round((word.correctCount / (word.correctCount + word.wrongCount)) * 100)
+  const accuracy = word.stats.correct_count + word.stats.wrong_count > 0
+    ? Math.round((word.stats.correct_count / (word.stats.correct_count + word.stats.wrong_count)) * 100)
     : 0;
   
   return (
@@ -94,13 +107,13 @@ const WordShow = () => {
               <div className="flex flex-col items-center justify-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
                 <CheckCircle className="h-8 w-8 text-green-500 mb-2" />
                 <span className="text-sm font-medium text-muted-foreground">Correct</span>
-                <span className="text-2xl font-bold">{word.correctCount}</span>
+                <span className="text-2xl font-bold">{word.stats.correct_count}</span>
               </div>
               
               <div className="flex flex-col items-center justify-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
                 <XCircle className="h-8 w-8 text-red-500 mb-2" />
                 <span className="text-sm font-medium text-muted-foreground">Wrong</span>
-                <span className="text-2xl font-bold">{word.wrongCount}</span>
+                <span className="text-2xl font-bold">{word.stats.wrong_count}</span>
               </div>
             </div>
             
@@ -126,13 +139,17 @@ const WordShow = () => {
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
-            {groups.map(group => (
-              <Link key={group.id} to={`/groups/${group.id}`}>
-                <Badge variant="secondary" className="hover:bg-secondary/80 cursor-pointer transition-colors">
-                  {group.name}
-                </Badge>
-              </Link>
-            ))}
+            {groups.length > 0 ? (
+              groups.map(group => (
+                <Link key={group.id} to={`/groups/${group.id}`}>
+                  <Badge variant="secondary" className="hover:bg-secondary/80 cursor-pointer transition-colors">
+                    {group.name}
+                  </Badge>
+                </Link>
+              ))
+            ) : (
+              <span className="text-muted-foreground">This word is not in any groups yet.</span>
+            )}
           </div>
         </CardContent>
       </Card>

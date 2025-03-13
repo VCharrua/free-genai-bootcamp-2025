@@ -1,4 +1,4 @@
-import { studyActivitiesService } from '../../services/study-activities.service';
+import { studyActivitiesService } from '../../services/study_activities.service';
 import { useApi } from '../useApi';
 import { usePagination } from '../usePagination';
 import { StudyActivity } from '../../types/api.types';

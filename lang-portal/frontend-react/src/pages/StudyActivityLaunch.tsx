@@ -36,7 +36,7 @@ const StudyActivityLaunch = () => {
                 : "Please provide a valid group ID to launch this activity."}
             </p>
             <Button asChild>
-              <Link to={!studyActivity ? "/study-activities" : `/study_activities/${id}`}>
+              <Link to={!studyActivity ? "/study_activities" : `/study_activities/${id}`}>
                 Return to {!studyActivity ? "Activities" : studyActivity.title}
               </Link>
             </Button>

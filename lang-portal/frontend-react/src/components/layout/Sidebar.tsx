@@ -36,7 +36,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
     },
     {
       name: "Study Activities",
-      path: "/study-activities",
+      path: "/study_activities",
       icon: BookOpen
     },
     {

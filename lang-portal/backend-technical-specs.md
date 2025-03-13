@@ -172,7 +172,7 @@ Returns performance statistics for the last 31 days.
 
 
 
-###  GET /api/study-activities
+###  GET /api/study_activities
 Returns a list of study activities.
 
 #### JSON Response
@@ -564,18 +564,24 @@ Returns a list of study sessions.
     {
       "id": 1,
       "activity_name": "Flashcards",
+      "group_id": 1,
       "group_name": "Basic Vocabulary",
       "start_time": "2023-10-01T12:00:00Z",
       "end_time": "2023-10-01T12:05:00Z",
-      "review_items_count": 20
+      "review_items_count": 20,
+      "correct_count": 15,
+      "wrong_count": 5
     },
     {
       "id": 2,
       "activity_name": "Quiz",
+      "group_id": 2,
       "group_name": "Advanced Vocabulary",
       "start_time": "2023-10-02T12:00:00Z",
       "end_time": "2023-10-02T12:30:00Z",
-      "review_items_count": 10
+      "review_items_count": 10,
+      "correct_count": 8,
+      "wrong_count": 2
     }
   ]
 }
@@ -589,10 +595,13 @@ Returns details of a specific study session.
 {
   "id": 1,
   "activity_name": "Flashcards",
+  "group_id": 1,
   "group_name": "Basic Vocabulary",
   "start_time": "2023-10-01T12:00:00Z",
   "end_time": "2023-10-01T12:05:00Z",
-  "review_items_count": 20
+  "review_items_count": 20,
+  "correct_count": 15,
+  "wrong_count": 5
 }
 ```
 

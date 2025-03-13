@@ -76,7 +76,7 @@ The database consists of the following tables:
 
 ### Study Activities
 
-- `GET /api/study-activities` - List all study activities
+- `GET /api/study_activities` - List all study activities
 - `GET /api/study_activities/:id` - Get details of a specific study activity
 - `GET /api/study_activities/:id/launch` - Get launch info including available groups
 - `GET /api/study_activities/:id/study_sessions` - Get study sessions for an activity

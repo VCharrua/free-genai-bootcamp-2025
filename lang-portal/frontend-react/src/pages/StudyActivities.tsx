@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ActivityCard from "@/components/ui/ActivityCard";
-import { useStudyActivities } from "@/hooks/study-activities/useStudyActivities";
+import { useStudyActivities } from "@/hooks/study_activities/useStudyActivities";
 
 const StudyActivities = () => {
   const [mounted, setMounted] = useState(false);
@@ -27,7 +27,6 @@ const StudyActivities = () => {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {activities.map((activity, index) => (
           <ActivityCard
-            key={activity.id}
             id={activity.id}
             title={activity.name}
             thumbnail={activity.preview_url}

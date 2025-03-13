@@ -218,9 +218,12 @@ class StudySession:
         session = query_db("""
             SELECT ss.*,
                   sa.name as activity_name,
+                  g.id as group_id,
                   g.name as group_name,
                   ss.created_at as start_time,
-                  (SELECT COUNT(*) FROM word_review_items WHERE study_session_id = ss.id) as review_items_count
+                  (SELECT COUNT(*) FROM word_review_items WHERE study_session_id = ss.id) as review_items_count,
+                  (SELECT COUNT(*) FROM word_review_items WHERE study_session_id = ss.id AND correct = 1) as correct_count,
+                  (SELECT COUNT(*) FROM word_review_items WHERE study_session_id = ss.id AND correct = 0) as wrong_count
             FROM study_sessions ss
             JOIN study_activities sa ON ss.study_activity_id = sa.id
             JOIN groups g ON ss.group_id = g.id
@@ -237,10 +240,13 @@ class StudySession:
         offset = (page - 1) * per_page
         sessions = query_db("""
             SELECT ss.*, 
-                  sa.name as activity_name, 
+                  sa.name as activity_name,
+                  g.id as group_id,
                   g.name as group_name,
                   ss.created_at as start_time,
-                  (SELECT COUNT(*) FROM word_review_items WHERE study_session_id = ss.id) as review_items_count
+                  (SELECT COUNT(*) FROM word_review_items WHERE study_session_id = ss.id) as review_items_count,
+                  (SELECT COUNT(*) FROM word_review_items WHERE study_session_id = ss.id AND correct = 1) as correct_count,
+                  (SELECT COUNT(*) FROM word_review_items WHERE study_session_id = ss.id AND correct = 0) as wrong_count
             FROM study_sessions ss
             JOIN study_activities sa ON ss.study_activity_id = sa.id
             JOIN groups g ON ss.group_id = g.id
@@ -273,9 +279,12 @@ class StudySession:
         sessions = query_db("""
             SELECT ss.*, 
                   sa.name as activity_name, 
+                  g.id as group_id,
                   g.name as group_name,
                   ss.created_at as start_time,
-                  (SELECT COUNT(*) FROM word_review_items WHERE study_session_id = ss.id) as review_items_count
+                  (SELECT COUNT(*) FROM word_review_items WHERE study_session_id = ss.id) as review_items_count,
+                  (SELECT COUNT(*) FROM word_review_items WHERE study_session_id = ss.id AND correct = 1) as correct_count,
+                  (SELECT COUNT(*) FROM word_review_items WHERE study_session_id = ss.id AND correct = 0) as wrong_count
             FROM study_sessions ss
             JOIN study_activities sa ON ss.study_activity_id = sa.id
             JOIN groups g ON ss.group_id = g.id

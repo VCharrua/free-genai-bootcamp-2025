@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import DataTable from "@/components/ui/DataTable";
-import { useStudyActivity, useStudyActivitySessions } from "@/hooks/study-activities/useStudyActivities";
+import { useStudyActivity, useStudyActivitySessions } from "@/hooks/study_activities/useStudyActivities";
 
 const StudyActivityShow = () => {
   const { id } = useParams<{ id: string }>();
@@ -45,7 +45,7 @@ const StudyActivityShow = () => {
       <div className="flex flex-col items-center justify-center p-8 text-center">
         <p className="text-xl font-medium mb-4">Study activity not found</p>
         <Button asChild>
-          <Link to="/study-activities">Back to Study Activities</Link>
+          <Link to="/study_activities">Back to Study Activities</Link>
         </Button>
       </div>
     );
@@ -106,7 +106,7 @@ const StudyActivityShow = () => {
             asChild 
             className="mb-2 text-muted-foreground hover:text-foreground"
           >
-            <Link to="/study-activities" className="flex items-center gap-1">
+            <Link to="/study_activities" className="flex items-center gap-1">
               <ChevronLeft size={16} />
               Back to Activities
             </Link>

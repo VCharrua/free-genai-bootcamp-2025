@@ -4,32 +4,36 @@ import { ArrowLeft, CalendarIcon, ClockIcon, BookOpenIcon, CheckCircle, XCircle 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { getSessionById } from "@/data/mockData"; 
 import { calculateDuration } from "@/lib/dateUtils";
+import { useStudySession, useStudySessionWords } from "@/hooks/study_sessions/useStudySessions";
+import DataTable from "@/components/ui/DataTable";
+import SoundButton from "@/components/ui/SoundButton";
+import { Badge } from "@/components/ui/badge";
 
 const StudySessionShow = () => {
   const { id } = useParams<{ id: string }>();
   const [mounted, setMounted] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [session, setSession] = useState(null);
+  
+  // Use the hooks for data fetching
+  const { session, loading, error } = useStudySession(Number(id));
+  const { 
+    items: words, 
+    pagination, 
+    loading: loadingWords, 
+    error: wordsError,
+    page,
+    sortBy,
+    sortDirection,
+    handlePageChange,
+    handleSort 
+  } = useStudySessionWords(Number(id));
   
   useEffect(() => {
     setMounted(true);
-    
-    // Simulate API call with mock data
-    try {
-      const sessionData = getSessionById(Number(id));
-      setSession(sessionData);
-      setLoading(false);
-    } catch (err) {
-      setError(err);
-      setLoading(false);
-    }
-  }, [id]);
+  }, []);
   
   // Loading state
-  if (loading) 
+  if (loading || loadingWords) 
     return <div><h2 className="text-xl font-semibold tracking-tight text-muted-foreground">Loading session data...</h2></div>;
   
   // Error state
@@ -54,9 +58,71 @@ const StudySessionShow = () => {
   // Calculate session stats
   const totalAnswers = session.correct_count + session.wrong_count;
   const accuracy = totalAnswers > 0 ? Math.round((session.correct_count / totalAnswers) * 100) : 0;
-  const duration = session.end_time && session.created_at ? 
-    calculateDuration(new Date(session.created_at), new Date(session.end_time)) :
+  const duration = session.end_time && session.start_time ? 
+    calculateDuration(new Date(session.start_time), new Date(session.end_time)) :
     "N/A";
+    
+  // Define columns for the words table
+  const columns = [
+    {
+      key: "portuguese",
+      header: "Portuguese",
+      sortable: true,
+      cell: (word: any) => (
+        <div className="flex items-center gap-2">
+          <SoundButton word={word.portuguese} language="portuguese" />
+          <Link 
+            to={`/words/${word.id}`} 
+            className="font-medium text-foreground hover:text-primary transition-colors"
+          >
+            {word.portuguese}
+          </Link>
+        </div>
+      ),
+    },
+    {
+      key: "kimbundu",
+      header: "Kimbundu",
+      sortable: true,
+      cell: (word: any) => (
+        <div className="flex items-center gap-2">
+          <SoundButton word={word.kimbundu} language="kimbundu" />
+          <Link 
+            to={`/words/${word.id}`} 
+            className="font-medium text-foreground hover:text-primary transition-colors"
+          >
+            {word.kimbundu}
+          </Link>
+        </div>
+      ),
+    },
+    {
+      key: "english",
+      header: "English",
+      sortable: true,
+      cell: (word: any) => <span>{word.english}</span>,
+    },
+    {
+      key: "correct_count",
+      header: "Correct Count",
+      sortable: true,
+      cell: (word: any) => (
+        <Badge variant="outline" className="bg-green-50 text-green-600 hover:bg-green-50 border-green-200">
+          {word.correct_count}
+        </Badge>
+      ),
+    },
+    {
+      key: "wrong_count",
+      header: "Wrong Count",
+      sortable: true,
+      cell: (word: any) => (
+        <Badge variant="outline" className="bg-red-50 text-red-600 hover:bg-red-50 border-red-200">
+          {word.wrong_count}
+        </Badge>
+      ),
+    },
+  ];
   
   return (
     <div className={mounted ? 'animate-fade-in' : 'opacity-0'}>
@@ -109,7 +175,7 @@ const StudySessionShow = () => {
                 <ClockIcon className="h-4 w-4 text-primary" />
                 <div>
                   <p className="text-sm text-muted-foreground">Start Time</p>
-                  <p className="font-medium">{new Date(session.created_at).toLocaleString()}</p>
+                  <p className="font-medium">{new Date(session.start_time).toLocaleString()}</p>
                 </div>
               </div>
               
@@ -133,14 +199,20 @@ const StudySessionShow = () => {
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-2 gap-y-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Duration</p>
-                <p className="font-medium">{duration}</p>
+              <div className="flex items-center gap-2">
+                <ClockIcon className="h-4 w-4 text-primary" />
+                <div>
+                  <p className="text-sm text-muted-foreground">Duration</p>
+                  <p className="font-medium">{duration}</p>
+                </div>
               </div>
-              
-              <div>
-                <p className="text-sm text-muted-foreground">Words Reviewed</p>
-                <p className="font-medium">{totalAnswers}</p>
+          
+              <div className="flex items-center gap-2">
+                <BookOpenIcon className="h-4 w-4 text-primary" />
+                <div>
+                  <p className="text-sm text-muted-foreground">Words Reviewed</p>
+                  <p className="font-medium">{totalAnswers}</p>
+                </div>
               </div>
               
               <div className="flex items-center gap-1.5">
@@ -185,9 +257,23 @@ const StudySessionShow = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-center py-12 text-muted-foreground">
-              <p>Detailed word review data would be displayed here in a real application</p>
-            </div>
+            {wordsError ? (
+              <div className="text-red-500 mb-4">Error loading word reviews</div>
+            ) : words && words.length > 0 ? (
+              <DataTable 
+                data={words} 
+                columns={columns}
+                pagination={{
+                  currentPage: page,
+                  totalPages: pagination?.total_pages || 1,
+                  onPageChange: handlePageChange
+                }}
+              />
+            ) : (
+              <div className="text-center py-12 text-muted-foreground">
+                <p>No word review data available for this session</p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

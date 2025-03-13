@@ -4,7 +4,7 @@ from app.utils import get_pagination_params
 
 study_activity_bp = Blueprint('study_activities', __name__)
 
-@study_activity_bp.route('/study-activities', methods=['GET'])
+@study_activity_bp.route('/study_activities', methods=['GET'])
 def get_study_activities():
     activities = StudyActivity.get_all()
     return jsonify(activities)

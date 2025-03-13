@@ -37,7 +37,7 @@ const App = () => (
             <Route element={<AppLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/study-activities" element={<StudyActivities />} />
+              <Route path="/study_activities" element={<StudyActivities />} />
               <Route path="/study_activities/:id" element={<StudyActivityShow />} />
               <Route path="/study_activities/:id/launch" element={<StudyActivityLaunch />} />
               <Route path="/words" element={<Words />} />

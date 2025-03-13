@@ -3,7 +3,7 @@
     "name": "Flashcards",
     "description": "Practice vocabulary with interactive flashcards",
     "url": "https://example.com/flashcards",
-    "preview_url": "http://localhost:8080/images/activities/activity01.jpg",
+    "preview_url": "/images/activities/activity01.jpg",
     "release_date" : "2024",
     "average_duration" : 20,
     "focus" : "Learning activity"
@@ -12,7 +12,7 @@
     "name": "Quiz",
     "description": "Test your knowledge with a comprehensive quiz",
     "url": "https://example.com/quiz",
-    "preview_url": "http://localhost:8080/images/activities/activity02.jpg",
+    "preview_url": "/images/activities/activity02.jpg",
     "release_date": "2023",
     "average_duration": 15,
     "focus": "Assessment"
@@ -21,7 +21,7 @@
     "name": "Matching Game",
     "description": "Improve memory by matching related words and concepts",
     "url": "https://example.com/matching",
-    "preview_url": "http://localhost:8080/images/activities/activity03.jpg",
+    "preview_url": "/images/activities/activity03.jpg",
     "release_date": "2024",
     "average_duration": 10,
     "focus": "Memory skills"
@@ -30,7 +30,7 @@
     "name": "Word Search",
     "description": "Find hidden words to build your vocabulary skills",
     "url": "https://example.com/wordsearch",
-    "preview_url": "http://localhost:8080/images/activities/activity04.jpg",
+    "preview_url": "/images/activities/activity04.jpg",
     "release_date": "2025",
     "average_duration": 25,
     "focus": "Vocabulary building"

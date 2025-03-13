@@ -11,7 +11,7 @@ import {
  */
 export const studyActivitiesService = {
   getAll: () => {
-    return get<StudyActivity[]>('/api/study-activities');
+    return get<StudyActivity[]>('/api/study_activities');
   },
   
   getById: (id: number) => {

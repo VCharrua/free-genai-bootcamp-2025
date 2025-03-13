@@ -38,7 +38,7 @@ Each of these routes are a page and we'll describe them in more details under th
 
 - /dashboard
 - /settings
-- /study-activities
+- /study_activities
 - /study_activities/:id
 - /study_activities/:id/launch
 - /words
@@ -92,7 +92,7 @@ This page provides a summary of the student's progression.
 
 ### Study Activity Index
 
-The route for this page /study-activities
+The route for this page /study_activities
 
 This is a grade of cards which represent study activities.
 
