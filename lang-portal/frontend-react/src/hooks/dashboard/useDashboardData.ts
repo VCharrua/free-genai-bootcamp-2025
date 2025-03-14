@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { dashboardService } from '../../services/dashboard.service';
 import { 
   LastStudySessionResponse, 
   StudyProgressResponse, 
   QuickStatsResponse, 
   PerformanceGraphDataPoint,
-  ContinueLearningSession
+  ContinueLearningSession,
+  ResetResponse
 } from '../../types/api.types';
 import { useApi } from '../useApi';
 
@@ -32,6 +33,37 @@ export function useDashboardData() {
   const continueLearning = useApi<ContinueLearningSession[]>(() => 
     dashboardService.getContinueLearning()
   );
+
+  // Add states for reset functionality
+  const [isResetting, setIsResetting] = useState(false);
+  const [resetError, setResetError] = useState<Error | null>(null);
+
+  // Function to refresh all data after reset
+  const refreshAllData = useCallback(() => {
+    lastSession.refresh();
+    studyProgress.refresh();
+    quickStats.refresh();
+    performanceGraph.refresh();
+    continueLearning.refresh();
+  }, [lastSession, studyProgress, quickStats, performanceGraph, continueLearning]);
+
+  // Full reset function that can be called from components
+  const fullReset = useCallback(async () => {
+    setIsResetting(true);
+    setResetError(null);
+    
+    try {
+      await dashboardService.fullReset();
+      // Refresh all data after successful reset
+      refreshAllData();
+      return true;
+    } catch (error) {
+      setResetError(error instanceof Error ? error : new Error('Failed to reset data'));
+      return false;
+    } finally {
+      setIsResetting(false);
+    }
+  }, [refreshAllData]);
 
   // Calculate if everything is loaded
   const isLoading = 
@@ -73,6 +105,11 @@ export function useDashboardData() {
     performanceGraph: performanceGraph.data,
     continueLearning: continueLearning.data,
     isLoading,
-    error
+    error,
+    // Add reset functionality to the return object
+    fullReset,
+    isResetting,
+    resetError,
+    refreshAllData
   };
 }

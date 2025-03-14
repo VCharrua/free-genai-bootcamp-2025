@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface ApiState<T> {
   data: T | null;
   loading: boolean;
   error: Error | null;
+  refresh: () => void; // Add refresh method to the interface
 }
 
 /**
@@ -14,8 +15,27 @@ export function useApi<T>(fetchFn: () => Promise<T>, deps: any[] = []) {
     data: null,
     loading: true,
     error: null,
+    refresh: () => {} // Initial placeholder
   });
 
+  // Create the refresh function using useCallback to maintain reference stability
+  const refresh = useCallback(async () => {
+    setState(prev => ({ ...prev, loading: true }));
+    
+    try {
+      const data = await fetchFn();
+      setState(prev => ({ ...prev, data, loading: false, error: null }));
+    } catch (error) {
+      setState(prev => ({ ...prev, loading: false, error: error as Error }));
+    }
+  }, [fetchFn]);
+
+  // Update the refresh function reference in state
+  useEffect(() => {
+    setState(prev => ({ ...prev, refresh }));
+  }, [refresh]);
+
+  // Initial data fetch
   useEffect(() => {
     let isMounted = true;
 
@@ -25,11 +45,11 @@ export function useApi<T>(fetchFn: () => Promise<T>, deps: any[] = []) {
       try {
         const data = await fetchFn();
         if (isMounted) {
-          setState({ data, loading: false, error: null });
+          setState(prev => ({ ...prev, data, loading: false, error: null }));
         }
       } catch (error) {
         if (isMounted) {
-          setState({ data: null, loading: false, error: error as Error });
+          setState(prev => ({ ...prev, data: null, loading: false, error: error as Error }));
         }
       }
     };

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,12 +6,18 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Separator } from "@/components/ui/separator";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import { useToast } from "@/hooks/use-toast";
+import { useDashboardData } from "@/hooks/dashboard/useDashboardData";
+import { useResetHistory } from "@/hooks/study_sessions/useStudySessions"; // Add this import
 
 const Settings = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isConfirmHistoryOpen, setIsConfirmHistoryOpen] = useState(false);
   const [isConfirmFullResetOpen, setIsConfirmFullResetOpen] = useState(false);
   const { toast } = useToast();
+  const { fullReset, isResetting, refreshAllData } = useDashboardData();
+  
+  // Connect the hook and pass the refreshAllData callback
+  const { resetHistory, loading: isHistoryResetting, error: historyResetError, success: historyResetSuccess } = useResetHistory();
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -29,22 +34,64 @@ const Settings = () => {
     });
   };
 
-  const handleResetHistory = () => {
-    // In a real app, this would reset the study history
-    toast({
-      title: "History Reset",
-      description: "All study history has been reset",
-    });
-    setIsConfirmHistoryOpen(false);
+  const handleResetHistory = async () => {
+    try {
+      // Call resetHistory without expecting a return value
+      await resetHistory();
+      
+      // Check the success state from the hook
+      if (historyResetSuccess) {
+        toast({
+          title: "History Reset",
+          description: "All study history has been reset",
+        });
+        
+        // Refresh dashboard data after successful reset
+        refreshAllData();
+      } else if (historyResetError) {
+        toast({
+          title: "Reset Failed",
+          description: historyResetError.message || "An error occurred while resetting history",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Reset Failed",
+        description: "An error occurred while resetting history",
+        variant: "destructive",
+      });
+      console.error("History reset error:", error);
+    } finally {
+      setIsConfirmHistoryOpen(false);
+    }
   };
 
-  const handleFullReset = () => {
-    // In a real app, this would reset the entire database
-    toast({
-      title: "Full Reset Completed",
-      description: "The entire database has been reset",
-    });
-    setIsConfirmFullResetOpen(false);
+  const handleFullReset = async () => {
+    try {
+      const success = await fullReset();
+      if (success) {
+        toast({
+          title: "Full Reset Completed",
+          description: "The entire database has been reset",
+        });
+      } else {
+        toast({
+          title: "Reset Failed",
+          description: "An error occurred while resetting the database",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Reset Failed",
+        description: "An error occurred while resetting the database",
+        variant: "destructive",
+      });
+      console.error("Full reset error:", error);
+    } finally {
+      setIsConfirmFullResetOpen(false);
+    }
   };
 
   return (
@@ -123,25 +170,27 @@ const Settings = () => {
 
       {/* Reset History Confirmation Dialog */}
       <ConfirmDialog
-        isOpen={isConfirmHistoryOpen}
-        onClose={() => setIsConfirmHistoryOpen(false)}
+        open={isConfirmHistoryOpen}
+        onOpenChange={setIsConfirmHistoryOpen}
         onConfirm={handleResetHistory}
         title="Reset History"
         description="This will permanently erase all your study sessions and word reviews. Type 'reset history' to confirm."
-        confirmWord="reset history"
-        confirmButtonText="Reset History"
+        confirmationString="reset history"
+        confirmText={isHistoryResetting ? "Resetting..." : "Reset History"}
+        disabled={isHistoryResetting}
       />
 
       {/* Full Reset Confirmation Dialog */}
       <ConfirmDialog
-        isOpen={isConfirmFullResetOpen}
-        onClose={() => setIsConfirmFullResetOpen(false)}
+        open={isConfirmFullResetOpen}
+        onOpenChange={setIsConfirmFullResetOpen}
         onConfirm={handleFullReset}
         title="Full Reset"
         description="This will permanently erase ALL data in the database. Type 'full reset' to confirm."
-        confirmWord="full reset"
-        confirmButtonText="Full Reset"
-        variant="destructive"
+        confirmationString="full reset"
+        confirmText={isResetting ? "Resetting..." : "Full Reset"}
+        destructive={true}
+        disabled={isResetting}
       />
     </div>
   );
