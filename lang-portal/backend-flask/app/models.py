@@ -538,10 +538,70 @@ class Dashboard:
             FROM study_sessions
         """, one=True)['count']
         
-        # Calculate study streak (simplified - just return days of current date)
+        # Calculate study streak (consecutive days with sessions up to yesterday)
         import datetime
+        import sqlite3
+        
         today = datetime.date.today()
-        study_streak = today.day
+        yesterday = today - datetime.timedelta(days=1)
+        yesterday_str = yesterday.strftime('%Y-%m-%d')
+        
+        try:
+            # Try advanced SQL approach with window functions (SQLite >= 3.25.0)
+            study_streak_query = """
+            WITH session_dates AS (
+                -- Get distinct dates with sessions
+                SELECT DISTINCT DATE(created_at) as session_date
+                FROM study_sessions
+                WHERE DATE(created_at) <= ?  -- Only consider up to yesterday
+            ),
+            streak_dates AS (
+                SELECT 
+                    session_date,
+                    -- Calculate difference between row number and date
+                    -- This will be constant for consecutive dates
+                    julianday(session_date) - ROW_NUMBER() OVER (ORDER BY session_date DESC) as group_id
+                FROM session_dates
+            )
+            SELECT CASE 
+                -- Check if there was a session yesterday
+                WHEN EXISTS (SELECT 1 FROM session_dates WHERE session_date = ?) THEN
+                    -- Count dates in the current streak group
+                    (SELECT COUNT(*) FROM streak_dates 
+                     WHERE group_id = (SELECT group_id FROM streak_dates WHERE session_date = ?))
+                ELSE 0
+            END as streak_days
+            """
+            
+            study_streak = query_db(study_streak_query, (yesterday_str, yesterday_str, yesterday_str), one=True)['streak_days']
+            
+        except sqlite3.OperationalError:
+            # Fallback for older SQLite versions that don't support window functions
+            # First check if there was a study session yesterday
+            had_session_yesterday = query_db(
+                "SELECT EXISTS(SELECT 1 FROM study_sessions WHERE DATE(created_at) = ?) as exists_flag",
+                (yesterday_str,), one=True
+            )['exists_flag']
+            
+            study_streak = 0
+            if had_session_yesterday:
+                # Get all dates with sessions, sorted in descending order
+                dates_query = """
+                    SELECT DISTINCT DATE(created_at) as session_date
+                    FROM study_sessions
+                    ORDER BY session_date DESC
+                """
+                dates = [row['session_date'] for row in query_db(dates_query)]
+                
+                # Calculate streak by checking consecutive days
+                streak_date = yesterday
+                for date_str in dates:
+                    date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
+                    if date == streak_date:
+                        study_streak += 1
+                        streak_date = streak_date - datetime.timedelta(days=1)
+                    else:
+                        break
         
         return {
             'success_rate': round(success_rate, 1),
@@ -553,9 +613,21 @@ class Dashboard:
     
     @staticmethod
     def full_reset():
-        execute_db("DELETE FROM word_review_items")
-        execute_db("DELETE FROM study_sessions")
-        return {'success': True, 'message': 'Full reset successfully'}
+        # Delete in order of dependency to avoid foreign key constraint violations
+        
+        # Start with tables that have foreign keys to other tables
+        execute_db("DELETE FROM word_review_items")  # References words and study_sessions
+        
+        # Then delete from tables with fewer dependencies
+        execute_db("DELETE FROM words_groups")  # Junction table between words and groups
+        execute_db("DELETE FROM study_sessions")  # References groups and study_activities
+        
+        # Finally delete from primary tables
+        execute_db("DELETE FROM words")
+        execute_db("DELETE FROM groups")
+        execute_db("DELETE FROM study_activities")  # Including this as requested
+        
+        return {'success': True, 'message': 'Full database reset completed successfully'}
     
     @staticmethod
     def get_performance_graph():

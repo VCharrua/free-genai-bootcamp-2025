@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   AlertDialog,
@@ -21,6 +20,7 @@ interface ConfirmDialogProps {
   confirmationString: string;
   onConfirm: () => void;
   destructive?: boolean;
+  disabled?: boolean; // Add disabled prop
 }
 
 const ConfirmDialog = ({
@@ -31,7 +31,8 @@ const ConfirmDialog = ({
   confirmText,
   confirmationString,
   onConfirm,
-  destructive = true
+  destructive = true,
+  disabled = false // Default to false
 }: ConfirmDialogProps) => {
   const [inputValue, setInputValue] = useState("");
   
@@ -67,14 +68,15 @@ const ConfirmDialog = ({
             onChange={(e) => setInputValue(e.target.value)}
             className={destructive ? "border-destructive/50 focus-visible:ring-destructive/30" : ""}
             placeholder={confirmationString}
+            disabled={disabled} // Disable input when operation is in progress
           />
         </div>
         
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={handleCancel}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel onClick={handleCancel} disabled={disabled}>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
-            disabled={isConfirmDisabled}
+            disabled={isConfirmDisabled || disabled} // Combine both conditions
             className={destructive ? "bg-destructive hover:bg-destructive/90" : ""}
           >
             {confirmText}
