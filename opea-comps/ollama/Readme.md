@@ -12,6 +12,13 @@ host_ip=$(hostname -I | awk '{print $1}') no_proxy=localhost LLM_ENDPOINT_PORT=8
 [Ollama API Documentation](github.com/ollama/ollama/blob/main/docs/api.md)
 
 
+### Ollama Models
+
+The Ollama Library contains a list of models that can be used with the Ollama API. The Model ID is a string that can be used to identify a model in the Ollama API.
+
+[Ollama Library](https://ollama.com/library)
+
+
 #### 1. Pull the model
 
 ```sh
