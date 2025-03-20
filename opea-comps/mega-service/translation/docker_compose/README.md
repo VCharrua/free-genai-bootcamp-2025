@@ -167,3 +167,13 @@ Following the validation of all aforementioned microservices, we are now prepare
 Open this URL `http://{host_ip}:5173` in your browser to access the frontend.
 ![project-screenshot](../../../../assets/img/trans_ui_init.png)
 ![project-screenshot](../../../../assets/img/trans_ui_select.png)
+
+## Source
+
+The source for this document can be found [here](https://github.com/opea-project/GenAIExamples/blob/main/Translation/docker_compose/intel/cpu/xeon/README.md).
+
+
+## License
+
+- Apache 2.0 License
+- Copyright (C) 2024 Intel Corporation

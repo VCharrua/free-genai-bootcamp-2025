@@ -67,3 +67,14 @@ The Translation service can be effortlessly deployed on either Intel Gaudi2 or I
 ### Deploy Translation
 
 Refer to the [Xeon Guide](./docker_compose/README.md) for instructions on deploying Translation on Xeon.
+
+
+## Source
+
+The source for this document can be found [here](https://github.com/opea-project/GenAIExamples/blob/main/Translation/README.md).
+
+
+## License
+
+- Apache 2.0 License
+- Copyright (C) 2024 Intel Corporation

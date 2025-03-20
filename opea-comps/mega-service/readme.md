@@ -36,7 +36,7 @@ flowchart LR
         a([User Input Query]):::orchid
         UI([UI server<br>]):::orchid
     end
-    subgraph LPInterface[" Free GenAI Bootcamp 2025 UI "]
+    subgraph LPInterface[" Free GenAI Bootcamp 2025 "]
         direction LR
         a2([Lang-Portal Website]):::orchid
         LP([API Endpoint<br>]):::orchid
@@ -57,7 +57,7 @@ flowchart LR
 
     %% Integration interaction
     direction LR
-    a2[Lang-Portal Website] --> LP
+    a2[Lang-Portal Website] --> |Translation Study Activity|LP
     LP --> GW
 
 
@@ -141,13 +141,21 @@ docker build \
   -f comps/llms/src/text-generation/Dockerfile .
 ```
 
-### 2. Setting Up Ollama External Volume
+### 2. Building the customized Translation UI Service
 
-Before deploying the services, you need to create an external Docker volume for Ollama:
+The Translation UI needs to be built as a Docker container:
 
 ```bash
-docker volume create ollama-data
+# Set the root directory of the OPEA Comps repository
+export OPEA_LANG_UI_FOLDER="/path-to-free-genai-bootcamp-2025/opea-comps/mega-service/translation/ui"
+cd ${OPEA_LANG_UI_FOLDER}
+
+docker build -t opea/translation-ui:latest --build-arg https_proxy=$https_proxy --build-arg http_proxy=$http_proxy -f docker/Dockerfile .
 ```
+
+This will allow us full control over the frontend UI and customize it to our needs.
+
+> *Note*: the same method can be applied to the nginx micro-service for customizing that component if needed.
 
 ## Deployment
 
@@ -198,18 +206,56 @@ The translation backend exposes endpoints for language translation:
 - **Request Body**:
   ```json
   {
-    "text": "Hello world",
-    "source_language": "en",
-    "target_language": "pt"
+    "language_from": "portuguese",
+    "language_to": "english",
+    "source_language": "Hoje vai chover."
   }
   ```
-- **Response**:
-  ```json
-  {
-    "translation": "Olá mundo",
-    "model_used": "llama3.1"
-  }
-  ```
+
+### Validate Microservices
+
+1. Ollama Service
+
+   ```bash
+   curl http://${host_ip}:8008/generate \
+     -X POST \
+     -d '{"inputs":"What is Deep Learning?","parameters":{"max_new_tokens":17, "do_sample": true}}' \
+     -H 'Content-Type: application/json'
+   ```
+
+2. LLM Microservice
+
+   ```bash
+   curl http://${host_ip}:9000/v1/chat/completions \
+     -X POST \
+     -d '{"query":"Translate this from Portuguese to English:\nPortuguese: Hoje vai chover.\nEnglish:"}' \
+     -H 'Content-Type: application/json'
+   ```
+
+3. MegaService
+
+   ```bash
+   curl http://${host_ip}:8888/v1/translation -H "Content-Type: application/json" -d '{
+        "language_from": "Portuguese","language_to": "English","source_language": "Hoje vai chover."}'
+   ```
+
+4. Nginx Service
+
+   ```bash
+   curl http://${host_ip}:${NGINX_PORT}/v1/translation \
+       -H "Content-Type: application/json" \
+       -d '{"language_from": "Portuguese","language_to": "English","source_language": "Hoje vai chover."}'
+   ```
+
+
+## Running the Mega-Service Locally
+
+Open this URL `http://{host_ip}:5173` in the browser to access the frontend with the customized UI.
+
+![Translation UI Screenshot 1](./translation/ui-images/screenshot01.png)
+
+![Translation UI Screenshot 2](./translation/ui-images/screenshot02.png)
+
 
 ## Service Management
 
@@ -270,7 +316,3 @@ For more detailed information, consult:
 - OPEA LLMs Documentation
 - [Ollama GitHub Repository](https://github.com/ollama/ollama)
 
-## License
-
-- Apache 2.0 License
-- Copyright (C) 2024 Intel Corporation

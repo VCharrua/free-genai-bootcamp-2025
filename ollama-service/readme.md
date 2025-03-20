@@ -10,7 +10,8 @@ The Ollama Mega-service consists of the following key components:
 
 1. **Ollama Server**: Core backend service for running LLMs locally
 2. **Open-WebUI**: Modern web interface for interacting with Ollama models
-3. **Docker Compose**: Orchestration for all components
+3. **NGINX**: Reverse proxy for routing and SSL termination
+4. **Docker Compose**: Orchestration for all components
 
 ### Information Flow
 
@@ -37,10 +38,12 @@ flowchart LR
     end
 
     Models{{LLM Models <br>}}
+    NG([Nginx MicroService]):::blue
 
     %% Connections
     direction LR
-    User --> OpenWebUI
+    User --> |HTTP Request|NG
+    NG --> OpenWebUI
     OpenWebUI <--> Ollama
     Ollama <-.-> Models
 
@@ -60,7 +63,7 @@ flowchart LR
 
 ```bash
 git clone https://github.com/VCharrua/free-genai-bootcamp-2025.git
-cd free-genai-bootcamp-2025/opea-comps/ollama
+cd free-genai-bootcamp-2025/opea-compos/ollama
 ```
 
 ### 2. Set Required Environment Variables
@@ -74,6 +77,7 @@ OLLAMA_NETWORK_SUBNET=10.6.0.0/16
 OLLAMA_NETWORK_GATEWAY=10.6.0.1
 OLLAMA_SERVER_IP=10.6.0.2
 OPENWEBUI_SERVER_IP=10.6.0.3
+NGINX_SERVER_IP=10.6.0.4
 
 # Ollama Configuration
 OLLAMA_HOST=ollama-server
@@ -129,6 +133,7 @@ docker-compose up -d
 This will start:
 1. The Ollama server container
 2. The Open-WebUI frontend
+3. The NGINX server for routing
 
 ### Verifying Deployment
 
@@ -196,7 +201,7 @@ The Ollama server exposes endpoints for model interaction:
 
 ## Running the Mega-Service Locally
 
-Open `http://localhost:3000` in your browser to access the Open-WebUI interface.
+Open `http://localhost:8080` in your browser to access the Open-WebUI interface.
 
 The interface allows you to:
 - Chat with multiple models
@@ -205,9 +210,7 @@ The interface allows you to:
 - Upload and process documents
 - View model information and statistics
 
-![Open-WebUI/Ollama Screenshot 1](./ui-images/screenshot01.png)
-
-![Open-WebUI/Ollama Screenshot 2](./ui-images/screenshot02.png)
+![Open-WebUI Screenshot](./images/openwebui-screenshot.png)
 
 ## Service Management
 
@@ -267,3 +270,8 @@ For more detailed information, consult:
 - [Ollama Documentation](https://github.com/ollama/ollama)
 - [Open-WebUI Documentation](https://github.com/open-webui/open-webui)
 - [Ollama API Reference](https://github.com/ollama/ollama/blob/main/docs/api.md)
+
+## License
+
+- Apache 2.0 License
+- Copyright (C) 2024 Free GenAI Bootcamp
