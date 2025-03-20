@@ -8,10 +8,10 @@ This documentation provides a comprehensive guide for implementing the OPEA Tran
 
 The OPEA Mega-service consists of the following key components:
 
-1. **Translation Python Microservice**: Backend service handling translation operations
+1. **Translation Python Micro-service**: Backend service handling translation operations
 2. **Translation UI**: Frontend interface for user interactions
 3. **LLM Service**: Large Language Model service for text processing
-   - **Ollama Microservice**: Container-based LLM runtime
+   - **Ollama Micro-service**: Container-based LLM runtime
 
 ### Information Flow
 
@@ -36,6 +36,11 @@ flowchart LR
         a([User Input Query]):::orchid
         UI([UI server<br>]):::orchid
     end
+    subgraph UserInterface[" Free GenAI Bootcamp 2025 UI "]
+        direction LR
+        a([Lang-Portal Website]):::orchid
+        LP([API Endpoint<br>]):::orchid
+    end
 
     LLM_gen{{LLM Service <br>}}
     GW([Translation GateWay<br>]):::orange
@@ -48,6 +53,13 @@ flowchart LR
     NG --> UI
     UI --> GW
     GW <==> Translation-MegaService
+
+
+    %% Integration interaction
+    direction LR
+    a[Lang-Portal Website] --> LP
+    LP --> GW
+
 
     %% Embedding service flow
     direction LR
