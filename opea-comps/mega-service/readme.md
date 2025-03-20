@@ -312,7 +312,7 @@ If the LLM fails to load models:
 ## Additional Resources
 
 For more detailed information, consult:
-- Lang-Portal Documentation
-- OPEA LLMs Documentation
+- [Lang-Portal Documentation](../../lang-portal/Readme.md)
+- [OPEA LLMs Documentation](https://opea-project.github.io/latest/microservices/index.html#llms-microservice)
 - [Ollama GitHub Repository](https://github.com/ollama/ollama)
 
