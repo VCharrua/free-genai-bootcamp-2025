@@ -38,7 +38,7 @@ flowchart LR
     end
     subgraph UserInterface[" Free GenAI Bootcamp 2025 UI "]
         direction LR
-        a([Lang-Portal Website]):::orchid
+        a2([Lang-Portal Website]):::orchid
         LP([API Endpoint<br>]):::orchid
     end
 
@@ -57,7 +57,7 @@ flowchart LR
 
     %% Integration interaction
     direction LR
-    a[Lang-Portal Website] --> LP
+    a2[Lang-Portal Website] --> LP
     LP --> GW
 
 
