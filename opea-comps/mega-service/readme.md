@@ -36,7 +36,7 @@ flowchart LR
         a([User Input Query]):::orchid
         UI([UI server<br>]):::orchid
     end
-    subgraph UserInterface[" Free GenAI Bootcamp 2025 UI "]
+    subgraph LPInterface[" Free GenAI Bootcamp 2025 UI "]
         direction LR
         a2([Lang-Portal Website]):::orchid
         LP([API Endpoint<br>]):::orchid
