@@ -1,0 +1,41 @@
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+Dockerfile.dev
+
+# Environment variables and secrets
+# .env
+# .env.*
+!.env.example
+*.pem
+*_key
+secrets/
+config.json
+credentials.json
+
+# Ollama
+models/
+ollama-data/
+
+# Logs
+logs/
+*.log
+log.txt
+npm-debug.log*
+
+# IDE/Editor specific
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+.~lock.*
+.history/
+
+# System
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/

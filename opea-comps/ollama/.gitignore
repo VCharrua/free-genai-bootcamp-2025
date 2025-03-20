@@ -1,41 +1,3 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-.pytest_cache/
-.coverage
-htmlcov/
-.tox/
-.nox/
-.hypothesis/
-.ruff_cache/
-
-# Virtual Environments
-venv/
-env/
-ENV/
-.env
-.venv
-env.bak/
-venv.bak/
 
 # Docker
 .dockerignore
@@ -43,8 +5,8 @@ docker-compose.override.yml
 Dockerfile.dev
 
 # Environment variables and secrets
-.env
-.env.*
+# .env
+# .env.*
 !.env.example
 *.pem
 *_key
