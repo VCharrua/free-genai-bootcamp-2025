@@ -3,23 +3,19 @@
 
 services:
   ollama-server:
-    image: ollama/ollama
+    extends: 
+      file: ../comps/third_parties/ollama/deployment/docker_compose/compose.yaml
+      service: ollama-server
     container_name: ollama-server
     volumes:
       - ollama-data:/root/.ollama
-    ports:
-      - ${LLM_ENDPOINT_PORT:-8008}:11434
     runtime: nvidia
     environment:
-      no_proxy: ${no_proxy}
-      http_proxy: ${http_proxy}
-      https_proxy: ${https_proxy}
-      LLM_MODEL_ID: ${LLM_MODEL_ID}
-      host_ip: ${host_ip}
       NVIDIA_VISIBLE_DEVICES: all
       NVIDIA_DRIVER_CAPABILITIES: compute,utility
       CUDA_VISIBLE_DEVICES: 0
       LOG_LEVEL: debug
+      LLM_COMPONENT_NAME: ${LLM_COMPONENT_NAME:-OpeaTextGenService}
     deploy:
       resources:
         reservations:
@@ -34,16 +30,56 @@ services:
         max-file: "2"
     tty: true
     networks:
-      - ollama-net    
+      ollama-net:
+        ipv4_address: ${WEBUI_HOST_IP:-10.5.0.2} 
+    extra_hosts:
+      - "host.docker.internal:host-gateway"                
     restart: unless-stopped
+
+
+
+
+    # image: ollama/ollama
+    # container_name: ollama-server
+    # volumes:
+    #   - ollama-data:/root/.ollama
+    # ports:
+    #   - ${LLM_ENDPOINT_PORT:-8008}:11434
+    # runtime: nvidia
+    # environment:
+    #   no_proxy: ${no_proxy}
+    #   http_proxy: ${http_proxy}
+    #   https_proxy: ${https_proxy}
+    #   LLM_MODEL_ID: ${LLM_MODEL_ID}
+    #   host_ip: ${host_ip}
+    #   NVIDIA_VISIBLE_DEVICES: all
+    #   NVIDIA_DRIVER_CAPABILITIES: compute,utility
+    #   CUDA_VISIBLE_DEVICES: 0
+    #   LOG_LEVEL: debug
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+    # logging:
+    #   driver: json-file
+    #   options:
+    #     max-size: "5m"
+    #     max-file: "2"
+    # tty: true
+    # networks:
+    #   - ollama-net    
+    # restart: unless-stopped
 
   open-webui:
     container_name: open-webui
     image: ghcr.io/open-webui/open-webui:main
     environment:
       - MODEL_DOWNLOAD_DIR=/models
-      - OLLAMA_API_BASE_URL=http://ollama-server:11434
-      - OLLAMA_API_URL=http://ollama-server:11434
+      - OLLAMA_API_BASE_URL=${LLM_ENDPOINT}
+      - OLLAMA_API_URL=${LLM_ENDPOINT}
       - LOG_LEVEL=debug
     volumes:
       - open-webui:/app/backend/data
@@ -59,7 +95,8 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"  
     networks:
-      - ollama-net
+      ollama-net:
+        ipv4_address: ${WEBUI_HOST_IP:-10.5.0.3} 
     restart: unless-stopped
 
 volumes:
@@ -71,3 +108,7 @@ volumes:
 networks:
   ollama-net:
     driver: bridge
+    ipam:
+      config:
+        - subnet: ${OPEA_NETW_SUBNET:-10.5.0.0/16}
+          gateway: ${OPEA_NETW_GATEWAY:-10.5.0.1}
