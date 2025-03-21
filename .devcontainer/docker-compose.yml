@@ -25,6 +25,14 @@ services:
     networks:
       - genai-network
 
+  node-vocab-importer:
+    image: mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm
+    volumes:
+      - ..:/workspaces/free-genai-bootcamp-2025:cached
+    command: sleep infinity
+    networks:
+      - genai-network
+
 networks:
   genai-network:
     name: genai-network
