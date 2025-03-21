@@ -12,6 +12,14 @@ dist
 dist-ssr
 *.local
 
+# Virtual environments
+## (for testing purposes, the env files will be uploaded to github)
+# env/
+# venv/
+# ENV/
+# .env
+# .venv
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

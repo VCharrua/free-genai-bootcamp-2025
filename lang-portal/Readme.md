@@ -16,19 +16,22 @@ Lang-Portal serves as a central hub for language learning with three main purpos
 
 Lang-Portal is built using a modern tech stack with a Flask backend and React frontend:
 
-```
-┌───────────────┐     ┌───────────────┐
-│  React        │     │  Flask        │
-│  Frontend     │◄────┤  Backend      │
-│               │     │               │
-└───────────────┘     └───────────────┘
-        │                     │
-        │                     │
-        v                     v
-┌───────────────┐     ┌───────────────┐
-│  Browser      │     │  SQLite       │
-│  Local Storage│     │  Database     │
-└───────────────┘     └───────────────┘
+```mermaid
+flowchart LR
+    Frontend["React Frontend\n(TypeScript/Vite)"]
+    Backend["Flask Backend\n(Python)"]
+    LocalStorage["Browser\nLocal Storage"]
+    Database["SQLite\nDatabase"]
+    
+    Frontend <--> Backend
+    Frontend --> LocalStorage
+    Backend --> Database
+    
+    style Frontend fill:#61DAFB,stroke:#000,color:#000
+    style Backend fill:#000000,stroke:#fff,color:#fff
+    style LocalStorage fill:#F9DC3E,stroke:#000,color:#000
+    style Database fill:#003B57,stroke:#fff,color:#fff
+
 ```
 
 ## Features
@@ -104,7 +107,7 @@ The backend server will start on http://localhost:5000
 
 ```bash
 # Navigate to frontend directory
-cd frontend
+cd frontend-react
 
 # Install dependencies
 npm install
@@ -180,3 +183,25 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+
+## Deployment with Docker
+
+In order to deploy the application using Docker, you can user the `docker-compose.yml` file in the `deployment/docker_compose` directory.
+
+### Deployment with image build
+
+To be used for the first time deployment with image build for the `backend-flask` and `frontend-react` services:
+
+```	bash
+cd deployment/docker_compose
+docker compose up --build -d
+```
+
+### Deployment without image build
+
+```	bash
+cd deployment/docker_compose
+docker compose up -d
+```
+````

@@ -1,69 +1,371 @@
-# Welcome to your Lovable project
+# Language Learning Portal - Frontend Application
 
-## Project info
+This frontend application serves as the user interface for a language learning portal focused on Portuguese, Kimbundu, and English vocabulary. It provides an interactive experience for exploring vocabulary words, managing thematic groups, tracking study sessions, and engaging with learning activities.
 
-**URL**: https://lovable.dev/projects/a57a837e-57bf-4b82-ba5c-f1da92dcb6ca
+## Objectives
 
-## How can I edit this code?
+- Provide a responsive and intuitive interface for users to explore vocabulary words
+- Offer multiple study activities for language learning
+- Track and display learning progress through comprehensive dashboards
+- Deliver a seamless, accessible user experience across devices
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- **React.js**: JavaScript library for building user interfaces
+- **TypeScript**: Static typing for JavaScript
+- **Tailwind CSS**: Utility-first CSS framework for styling
+- **Vite.js**: Build tool and development server
+- **ShadCN**: Component library for consistent UI elements
+- **React Router**: Client-side routing
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/a57a837e-57bf-4b82-ba5c-f1da92dcb6ca) and start prompting.
+## File Structure
 
-Changes made via Lovable will be committed automatically to this repo.
+frontend-react/
+├── public/                         # Static assets
+├── src/                            # Application source code
+│   ├── assets/                     # Images, fonts, etc.
+│   ├── components/                 # Reusable UI components
+│   │   ├── layout/                 # Layout components
+│   │   ├── dashboard/              # Dashboard-specific components
+│   │   ├── study-activities/       # Study activity components
+│   │   ├── words/                  # Word-related components
+│   │   └── ui/                     # General UI components
+│   ├── config/                     # Configuration files
+│   │   └── api.ts                  # API configuration
+│   ├── hooks/                      # Custom React hooks
+│   │   ├── dashboard/              # Dashboard-related hooks
+│   │   ├── study_activities/       # Study activity hooks
+│   │   ├── words/                  # Word-related hooks
+│   │   ├── groups/                 # Group-related hooks
+│   │   └── study_sessions/         # Study session hooks
+│   ├── pages/                      # Page components
+│   │   ├── Dashboard.tsx           # Dashboard page
+│   │   ├── StudyActivities/        # Study activity pages
+│   │   ├── Words/                  # Word-related pages
+│   │   ├── Groups/                 # Group-related pages
+│   │   ├── StudySessions/          # Study session pages
+│   │   └── Settings.tsx            # Settings page
+│   ├── services/                   # API service functions
+│   │   ├── api.service.ts          # Base API service
+│   │   ├── dashboard.service.ts    # Dashboard API service
+│   │   ├── study_activities.service.ts # Study activities API service
+│   │   ├── words.service.ts        # Words API service
+│   │   ├── groups.service.ts       # Groups API service
+│   │   └── study_sessions.service.ts # Study sessions API service
+│   ├── types/                      # TypeScript type definitions
+│   ├── utils/                      # Utility functions
+│   ├── App.tsx                     # Main application component
+│   ├── main.tsx                    # Application entry point
+│   └── routes.tsx                  # Route definitions
+├── .env                            # Environment variables
+├── index.html                      # HTML entry point
+├── package.json                    # Project dependencies
+├── tsconfig.json                   # TypeScript configuration
+├── vite.config.ts                  # Vite configuration
+└── tailwind.config.js              # Tailwind CSS configuration
 
-**Use your preferred IDE**
+## Application Routes
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+The frontend application includes the following routes, each serving a specific purpose in the language learning experience:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- `/dashboard` - Landing page with learning progress overview
+- `/settings` - Application settings and data management
+- `/study_activities` - Browse available learning activities
+- `/study_activities/:id` - View details of a specific learning activity
+- `/study_activities/:id/launch` - Launch an activity with a selected word group
+- `/words` - Browse vocabulary words with filtering and sorting
+- `/words/:id` - View details of a specific vocabulary word
+- `/groups` - Browse thematic word groups
+- `/groups/:id` - View details of a specific word group
+- `/study_sessions` - Browse history of study sessions
+- `/study_sessions/:id` - View details of a specific study session
 
-Follow these steps:
+## Global Components
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Navigation
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+The application features a collapsible vertical navigation bar with links to all main sections:
+- Dashboard
+- Study Activities
+- Words
+- Word Groups
+- Study Sessions
+- Settings
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Banner
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+A banner component appears at the top of each page, with an enhanced version on the dashboard.
+
+### Breadcrumb
+
+A breadcrumb trail helps users understand their location in the application hierarchy.
+
+## Page Descriptions
+
+### Dashboard
+
+The dashboard provides a comprehensive overview of learning progress:
+- Last study session summary (activity, time, performance)
+- Study progress statistics (words learned, mastery percentage)
+- Quick stats (success rate, study sessions, active groups, streak)
+- Continue learning section with recent incomplete sessions
+- Performance graph showing vocabulary progress over time
+
+### Study Activities
+
+Browse available learning activities displayed as cards with:
+- Thumbnails
+- Titles
+- Launch and View buttons
+- Option to start a new study session by selecting a word group
+
+### Words
+
+Explore vocabulary words with:
+- Sortable table columns
+- Pagination
+- Audio pronunciation
+- Performance statistics for each word
+- Detailed view of individual words with group associations
+
+### Word Groups
+
+Browse thematic word groups with:
+- Group statistics
+- Associated words
+- Study sessions for each group
+- Tabbed interface for words and sessions
+
+### Study Sessions
+
+Track learning history with:
+- Session details (activity, group, time)
+- Performance metrics (correct vs. incorrect responses)
+- Words reviewed in each session
+
+### Settings
+
+Configure application settings including:
+- Reset history option
+- Full database reset option
+- Dark/light mode toggle
+
+## API Integration
+
+### Architecture
+
+The frontend connects to the Flask backend through a structured service layer:
+
+```mermaid
+flowchart TD
+    subgraph "Frontend (React)"
+        UI[UI Components] --> Pages
+        
+        subgraph "Pages"
+            Dashboard --> Hooks
+            Words --> Hooks
+            Groups --> Hooks
+            StudyActivities --> Hooks
+            StudySessions --> Hooks
+            Settings --> Hooks
+        end
+        
+        subgraph "Hooks"
+            useDashboard --> Services
+            useWords --> Services
+            useGroups --> Services
+            useStudyActivities --> Services
+            useStudySessions --> Services
+        end
+        
+        subgraph "Services"
+            DashboardService --> APIClient
+            WordsService --> APIClient
+            GroupsService --> APIClient
+            StudyActivitiesService --> APIClient
+            StudySessionsService --> APIClient
+            APIClient --> REST
+        end
+    end
+    
+    REST[REST API Calls] <--> Endpoints
+    
+    subgraph "Backend (Flask)"
+        subgraph "Endpoints"
+            DashboardRoutes --> Controllers
+            WordRoutes --> Controllers
+            GroupRoutes --> Controllers
+            ActivityRoutes --> Controllers
+            SessionRoutes --> Controllers
+        end
+        
+        subgraph "Controllers"
+            DashboardController --> Models
+            WordController --> Models
+            GroupController --> Models
+            ActivityController --> Models
+            SessionController --> Models
+        end
+        
+        Models --> Database[(SQLite Database)]
+    end
+    
+    classDef frontendClass fill:#61dafb,stroke:#333,stroke-width:1px;
+    classDef backendClass fill:#4caf50,stroke:#333,stroke-width:1px;
+    classDef databaseClass fill:#ff9800,stroke:#333,stroke-width:1px;
+    
+    class UI,Pages,Hooks,Services frontendClass;
+    class Endpoints,Controllers,Models backendClass;
+    class Database databaseClass;
 ```
 
-**Edit a file directly in GitHub**
+### Configuration
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+The API base URL is configured in `src/config/api.ts` with a default of `http://localhost:5000`, which can be overridden using environment variables.
 
-**Use GitHub Codespaces**
+### Custom Hooks
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Custom hooks handle data fetching, state management, and business logic, separating these concerns from UI components. Each feature area has dedicated hooks that build upon service functions.
 
-## What technologies are used for this project?
+### Services
 
-This project is built with .
+Service functions make API calls to backend endpoints. Each feature area has a dedicated service file with functions that correspond to specific API endpoints.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Setup and Deployment
 
-## How can I deploy this project?
+### Prerequisites
 
-Simply open [Lovable](https://lovable.dev/projects/a57a837e-57bf-4b82-ba5c-f1da92dcb6ca) and click on Share -> Publish.
+- Node.js 20.x
+- npm or yarn package manager
+- Docker (optional, for containerized deployment)
 
-## I want to use a custom domain - is that possible?
+### Installation
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+#### 1. Clone the repository:
+    ```bash
+    git clone <repository-url>
+    cd lang-portal/frontend-react
+    ```
+
+#### 2. Install dependencies:
+    ```bash
+    npm install
+    # or
+    yarn   
+    ```
+
+#### 3. Create a .env file:
+    ```bash	
+    VITE_API_BASE_URL=http://localhost:5000
+    ``` 
+
+#### 4. Start the development server:
+    ```bash
+    npm run dev
+    # or
+    yarn dev
+    ```
+
+The application will be available at http://localhost:5173.
+
+### Docker Deployment
+
+You can also deploy the application using Docker:
+
+#### 1. Build the Docker image:
+
+```bash
+# Set the root directory of the OPEA Comps repository
+export FRONTEND_FOLDER="/path-to-free-genai-bootcamp-2025/lang-portal/frontend-react"
+cd ${FRONTEND_FOLDER}
+
+# Build the container
+docker build \
+  -t genai-bootcamp-2025/language-portal-frontend:latest \
+  -f docker/Dockerfile .
+
+
+docker build \
+  -t genai-bootcamp-2025/language-portal-frontend:latest \
+  -f Dockerfile .
+```
+
+#### 2. Run the Docker container:
+
+```bash
+docker run -p 5173:5173 genai-bootcamp-2025/language-portal-frontend:latest
+```
+
+This will build and start the container with the React application running on port 5173.
+
+For production deployment with custom API URL:
+```bash
+docker run -p 5173:5173 -e VITE_API_BASE_URL=http://api-server-url genai-bootcamp-2025/language-portal-frontend:latest
+```
+
+### Production Build
+
+To create a production build:
+
+```bash
+npm run build
+# or
+yarn build
+```
+
+The build output will be in the `dist` directory, which can be served by any static file server.
+
+## Development Workflow
+
+1. **Component Development**: 
+   - Create or modify components in the `src/components` directory
+   - Use Storybook (if available) for isolated component development
+
+2. **Page Development**:
+   - Create or modify page components in the `src/pages` directory
+   - Use custom hooks for data fetching and state management
+
+3. **API Integration**:
+   - Add or update service functions in the `src/services` directory
+   - Create custom hooks that use these services
+
+4. **Styling**:
+   - Use Tailwind CSS utility classes for styling
+   - For complex components, consider extracting styles to separate files
+
+5. **Testing**:
+   - Write unit tests for components and hooks
+   - Test API integration with mock services
+
+## Error Handling
+
+The application includes comprehensive error handling at multiple levels:
+
+1. **API Service Level**: HTTP errors and response parsing
+2. **Hook Level**: Error state management
+3. **Component Level**: User-friendly error messages and fallbacks
+
+## Pagination and Sorting
+
+List views use a standardized pagination and sorting system that provides:
+- Page navigation
+- Items per page selection
+- Column sorting (ascending/descending)
+- Consistent UI across all list pages
+
+## Theming and Accessibility
+
+The application supports:
+- Light and dark mode themes
+- Keyboard navigation
+- Screen reader compatibility
+- Responsive design for mobile and desktop
+
+## Future Improvements
+
+- Add comprehensive test coverage
+- Implement offline support with service workers
+- Add user authentication and profiles
+- Support for additional languages
+- Performance optimizations for large vocabulary sets
+- Advanced analytics for learning patterns

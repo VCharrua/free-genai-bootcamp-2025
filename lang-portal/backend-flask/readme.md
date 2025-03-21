@@ -109,22 +109,23 @@ The database consists of the following tables:
 
 - Python 3.6+
 - pip (Python package manager)
+- Docker (optional, for containerized deployment)
 
 ### Installation
 
 1. Clone the repository:
-   ```
+   ```bash
    git clone <repository-url>
    cd lang-portal/backend-flask
    ```
 
 2. Install dependencies:
-   ```
+   ```bash
    pip install -r requirements.txt
    ```
 
 3. Set up the database:
-   ```
+   ```bash
    python -m invoke setup
    ```
 
@@ -141,17 +142,52 @@ python -m invoke setup
 
 Demo data includes sample study sessions and word review records that simulate user activity, useful for testing dashboard statistics and learning progress features.
 
+### Docker Deployment
+
+You can also deploy the application using Docker:
+
+#### 1. Build the Docker image:
+
+```bash
+# Set the root directory of the OPEA Comps repository
+export BACKEND_FOLDER="/path-to-free-genai-bootcamp-2025/lang-portal/backend-flask"
+cd ${BACKEND_FOLDER}
+
+# Build the container
+docker build \
+  -t genai-bootcamp-2025/language-portal-backend:latest \
+  -f docker/Dockerfile .
+```
+
+#### 2. Run the Docker container:
+
+```bash
+docker run -p 5000:5000 genai-bootcamp-2025/language-portal-backend:latest
+```
+
+This will build and start the container with the Flask application running on port 5000.
+
+For production deployment, you might want to customize the environment variables:
+```bash
+docker run -p 5000:5000 -e FLASK_ENV=production genai-bootcamp-2025/language-portal-backend:latest
+```
+
+To include demo data when running in Docker:
+```bash
+docker run -p 5000:5000 -e FLASK_DEMO=true genai-bootcamp-2025/language-portal-backend:latest
+```
+
 ### Running the Application
 
 Start the Flask development server:
-```
+```bash
 python run.py
 ```
 
 The API will be available at http://localhost:5000.
 
 For production deployment, it's recommended to use a WSGI server like Gunicorn:
-```
+```bash
 pip install gunicorn
 gunicorn run:app
 ```
