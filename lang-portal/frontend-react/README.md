@@ -20,6 +20,7 @@ This frontend application serves as the user interface for a language learning p
 
 ## File Structure
 
+```
 frontend-react/
 ├── public/                         # Static assets
 ├── src/                            # Application source code
@@ -63,6 +64,7 @@ frontend-react/
 ├── tsconfig.json                   # TypeScript configuration
 ├── vite.config.ts                  # Vite configuration
 └── tailwind.config.js              # Tailwind CSS configuration
+```
 
 ## Application Routes
 
@@ -157,65 +159,49 @@ Configure application settings including:
 The frontend connects to the Flask backend through a structured service layer:
 
 ```mermaid
-flowchart TD
+---
+config:
+  flowchart:
+    nodeSpacing: 100
+    curve: linear
+  themeVariables:
+    fontSize: 20px
+---
+flowchart LR
+    %% Colors %%
+    classDef blue fill:#ADD8E6,stroke:#ADD8E6,stroke-width:2px,fill-opacity:0.5
+    classDef orange fill:#FBAA60,stroke:#ADD8E6,stroke-width:2px,fill-opacity:0.5
+    classDef orchid fill:#C26DBC,stroke:#ADD8E6,stroke-width:2px,fill-opacity:0.5
+    classDef invisible fill:transparent,stroke:transparent;
+
+    %% Subgraphs %%
     subgraph "Frontend (React)"
-        UI[UI Components] --> Pages
-        
-        subgraph "Pages"
-            Dashboard --> Hooks
-            Words --> Hooks
-            Groups --> Hooks
-            StudyActivities --> Hooks
-            StudySessions --> Hooks
-            Settings --> Hooks
-        end
-        
-        subgraph "Hooks"
-            useDashboard --> Services
-            useWords --> Services
-            useGroups --> Services
-            useStudyActivities --> Services
-            useStudySessions --> Services
-        end
-        
-        subgraph "Services"
-            DashboardService --> APIClient
-            WordsService --> APIClient
-            GroupsService --> APIClient
-            StudyActivitiesService --> APIClient
-            StudySessionsService --> APIClient
-            APIClient --> REST
-        end
+        direction LR
+        UI[UI Components]:::orchid
+        APIClient[API Client]:::orchid
     end
     
-    REST[REST API Calls] <--> Endpoints
+    REST([REST API Calls]):::orange
+    REST <--> Endpoints
     
     subgraph "Backend (Flask)"
-        subgraph "Endpoints"
-            DashboardRoutes --> Controllers
-            WordRoutes --> Controllers
-            GroupRoutes --> Controllers
-            ActivityRoutes --> Controllers
-            SessionRoutes --> Controllers
-        end
-        
-        subgraph "Controllers"
-            DashboardController --> Models
-            WordController --> Models
-            GroupController --> Models
-            ActivityController --> Models
-            SessionController --> Models
-        end
-        
-        Models --> Database[(SQLite Database)]
+        Endpoints:::blue
+        Models:::orchid
     end
-    
-    classDef frontendClass fill:#61dafb,stroke:#333,stroke-width:1px;
-    classDef backendClass fill:#4caf50,stroke:#333,stroke-width:1px;
-    classDef databaseClass fill:#ff9800,stroke:#333,stroke-width:1px;
-    
-    class UI,Pages,Hooks,Services frontendClass;
-    class Endpoints,Controllers,Models backendClass;
+
+    Database{{SQLite Database <br>}}
+
+    %% Frontend Flow %%
+    direction LR
+    UI --> APIClient
+    APIClient --> REST
+
+    %% Backend service flow
+    direction LR
+    Endpoints <--> |Controllers|Models
+    Models <-.-> Database
+
+    classDef databaseClass fill:#ff9800,stroke:#333,stroke-width:1px; 
     class Database databaseClass;
 ```
 
@@ -242,29 +228,29 @@ Service functions make API calls to backend endpoints. Each feature area has a d
 ### Installation
 
 #### 1. Clone the repository:
-    ```bash
-    git clone <repository-url>
-    cd lang-portal/frontend-react
-    ```
+```bash
+git clone <repository-url>
+cd lang-portal/frontend-react
+```
 
 #### 2. Install dependencies:
-    ```bash
-    npm install
-    # or
-    yarn   
-    ```
+```bash
+npm install
+# or
+yarn   
+```
 
 #### 3. Create a .env file:
-    ```bash	
-    VITE_API_BASE_URL=http://localhost:5000
-    ``` 
+```bash	
+VITE_API_BASE_URL=http://localhost:5000
+``` 
 
 #### 4. Start the development server:
-    ```bash
-    npm run dev
-    # or
-    yarn dev
-    ```
+```bash
+npm run dev
+# or
+yarn dev
+```
 
 The application will be available at http://localhost:5173.
 

@@ -113,21 +113,24 @@ The database consists of the following tables:
 
 ### Installation
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd lang-portal/backend-flask
-   ```
+#### 1. Clone the repository:
 
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+git clone <repository-url>
+cd lang-portal/backend-flask
+```
 
-3. Set up the database:
-   ```bash
-   python -m invoke setup
-   ```
+#### 2. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+#### 3. Set up the database:
+
+```bash
+python -m invoke setup
+```
 
 The setup process will initialize the database with essential data. If you want to include additional demo data (study sessions and word review items), you can set the `FLASK_DEMO` environment variable:
 
@@ -263,12 +266,12 @@ This project includes a comprehensive test suite to ensure all API endpoints ret
 
 ### Running the Tests
 
-1. Make sure all dependencies are installed:
+#### 1. Make sure all dependencies are installed:
 ```bash
 pip install pytest pytest-cov
 ```
 
-2. Run the test suite using the provided script:
+#### 2. Run the test suite using the provided script:
 ```bash
 ./run_tests.sh
 ```

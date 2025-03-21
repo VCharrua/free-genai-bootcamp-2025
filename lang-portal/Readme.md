@@ -16,22 +16,48 @@ Lang-Portal serves as a central hub for language learning with three main purpos
 
 Lang-Portal is built using a modern tech stack with a Flask backend and React frontend:
 
-```mermaid
-flowchart LR
-    Frontend["React Frontend\n(TypeScript/Vite)"]
-    Backend["Flask Backend\n(Python)"]
-    LocalStorage["Browser\nLocal Storage"]
-    Database["SQLite\nDatabase"]
-    
-    Frontend <--> Backend
-    Frontend --> LocalStorage
-    Backend --> Database
-    
-    style Frontend fill:#61DAFB,stroke:#000,color:#000
-    style Backend fill:#000000,stroke:#fff,color:#fff
-    style LocalStorage fill:#F9DC3E,stroke:#000,color:#000
-    style Database fill:#003B57,stroke:#fff,color:#fff
 
+
+```mermaid
+---
+config:
+  flowchart:
+    nodeSpacing: 100
+    curve: linear
+  themeVariables:
+    fontSize: 20px
+---
+flowchart LR
+    %% Colors %%
+    classDef blue fill:#ADD8E6,stroke:#ADD8E6,stroke-width:2px,fill-opacity:0.5
+    classDef orange fill:#FBAA60,stroke:#ADD8E6,stroke-width:2px,fill-opacity:0.5
+    classDef orchid fill:#C26DBC,stroke:#ADD8E6,stroke-width:2px,fill-opacity:0.5
+    classDef invisible fill:transparent,stroke:transparent;
+    style Backend-Component stroke:#000000
+
+    %% Subgraphs %%
+    subgraph Backend-Component[" Flask Backend "]
+        direction LR
+        AE([API Endpoints]):::blue
+    end
+    subgraph Frontend-Componen[" React Frontend "]
+        direction LR
+        a([User Interface Portal]):::orchid
+        UI([UI server<br>]):::orchid
+    end
+
+    db{{SQLite3 Database <br>}}
+    AC([API calls<br>]):::orange
+
+    %% User UI interaction
+    direction LR
+    a[User Input Query] --> UI
+    UI --> AC
+    AC <==> Backend-Component
+
+    %% Backend service flow
+    direction LR
+    AE <-.-> db
 ```
 
 ## Features
@@ -165,25 +191,6 @@ lang-portal/
 - Backend: Configuration in `config.py`
 - Frontend: Environment variables in `.env` file
 
-## Future Improvements
-
-- User authentication and personalized learning paths
-- Additional language support
-- Mobile application
-- Offline learning mode
-- Social features for collaborative learning
-- Integration with more third-party learning applications
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 
 ## Deployment with Docker
 
@@ -204,4 +211,23 @@ docker compose up --build -d
 cd deployment/docker_compose
 docker compose up -d
 ```
-````
+
+
+## Future Improvements
+
+- User authentication and personalized learning paths
+- Additional language support
+- Mobile application
+- Offline learning mode
+- Social features for collaborative learning
+- Integration with more third-party learning applications
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request

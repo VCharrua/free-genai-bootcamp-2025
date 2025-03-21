@@ -4,7 +4,8 @@ Language Translation is the communication of the meaning of a source-language te
 
 Translation architecture shows below:
 
-![architecture](./assets/img/translation_architecture.png)
+![architecture](./ui-images/translation_architecture.png "Source: OPEA GitHub Examples Repository (https://github.com/opea-project/GenAIExamples/blob/main/Translation/README.md)")
+
 
 The Translation example is implemented using the component-level microservices defined in [GenAIComps](https://github.com/opea-project/GenAIComps). The flow chart below shows the information flow between different microservices for this example.
 
@@ -12,11 +13,10 @@ The Translation example is implemented using the component-level microservices d
 ---
 config:
   flowchart:
-    nodeSpacing: 400
-    rankSpacing: 100
+    nodeSpacing: 100
     curve: linear
   themeVariables:
-    fontSize: 50px
+    fontSize: 20px
 ---
 flowchart LR
     %% Colors %%

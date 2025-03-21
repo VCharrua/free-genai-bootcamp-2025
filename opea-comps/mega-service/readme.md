@@ -18,6 +18,14 @@ The OPEA Mega-service consists of the following key components:
 The flow chart below shows the interaction between different microservices:
 
 ```mermaid
+---
+config:
+  flowchart:
+    nodeSpacing: 100
+    curve: linear
+  themeVariables:
+    fontSize: 20px
+---
 flowchart LR
     %% Colors %%
     classDef blue fill:#ADD8E6,stroke:#ADD8E6,stroke-width:2px,fill-opacity:0.5
@@ -214,38 +222,38 @@ The translation backend exposes endpoints for language translation:
 
 ### Validate Microservices
 
-1. Ollama Service
+#### 1. Ollama Service
 
-   ```bash
-   curl http://${host_ip}:8008/generate \
-     -X POST \
-     -d '{"inputs":"What is Deep Learning?","parameters":{"max_new_tokens":17, "do_sample": true}}' \
-     -H 'Content-Type: application/json'
-   ```
+```bash
+curl http://${host_ip}:8008/generate \
+  -X POST \
+  -d '{"inputs":"What is Deep Learning?","parameters":{"max_new_tokens":17, "do_sample": true}}' \
+  -H 'Content-Type: application/json'
+```
 
-2. LLM Microservice
+#### 2. LLM Microservice
 
-   ```bash
-   curl http://${host_ip}:9000/v1/chat/completions \
-     -X POST \
-     -d '{"query":"Translate this from Portuguese to English:\nPortuguese: Hoje vai chover.\nEnglish:"}' \
-     -H 'Content-Type: application/json'
-   ```
+```bash
+curl http://${host_ip}:9000/v1/chat/completions \
+  -X POST \
+  -d '{"query":"Translate this from Portuguese to English:\nPortuguese: Hoje vai chover.\nEnglish:"}' \
+  -H 'Content-Type: application/json'
+```
 
-3. MegaService
+#### 3. MegaService
 
-   ```bash
-   curl http://${host_ip}:8888/v1/translation -H "Content-Type: application/json" -d '{
-        "language_from": "Portuguese","language_to": "English","source_language": "Hoje vai chover."}'
-   ```
+```bash
+curl http://${host_ip}:8888/v1/translation -H "Content-Type: application/json" -d '{
+    "language_from": "Portuguese","language_to": "English","source_language": "Hoje vai chover."}'
+```
 
-4. Nginx Service
+#### 4. Nginx Service
 
-   ```bash
-   curl http://${host_ip}:${NGINX_PORT}/v1/translation \
-       -H "Content-Type: application/json" \
-       -d '{"language_from": "Portuguese","language_to": "English","source_language": "Hoje vai chover."}'
-   ```
+```bash
+curl http://${host_ip}:${NGINX_PORT}/v1/translation \
+    -H "Content-Type: application/json" \
+    -d '{"language_from": "Portuguese","language_to": "English","source_language": "Hoje vai chover."}'
+```
 
 
 ## Running the Mega-Service Locally
