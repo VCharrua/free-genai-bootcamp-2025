@@ -170,7 +170,7 @@ This will allow us full control over the frontend UI and customize it to our nee
 Deploy all services using Docker Compose:
 
 ```bash
-cd opea-comps/mega-service/translation/docker_compose
+cd opea-comps/mega-service/translation/deployment/docker_compose
 docker compose up -d
 ```
 

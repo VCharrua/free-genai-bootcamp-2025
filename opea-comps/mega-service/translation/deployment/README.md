@@ -165,8 +165,10 @@ Following the validation of all aforementioned microservices, we are now prepare
 ## 🚀 Launch the UI
 
 Open this URL `http://{host_ip}:5173` in your browser to access the frontend.
-![project-screenshot](../../../../assets/img/trans_ui_init.png)
-![project-screenshot](../../../../assets/img/trans_ui_select.png)
+
+![Translation UI Screenshot 1](../ui-images/screenshot01.png)
+
+![Translation UI Screenshot 2](../ui-images/screenshot02.png)
 
 ## Source
 

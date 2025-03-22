@@ -4,7 +4,7 @@
 services:
   llm-ollama-server:
     extends: 
-      file: ../../../comps/third_parties/ollama/deployment/docker_compose/compose.yaml
+      file: ../../../../comps/third_parties/ollama/deployment/docker_compose/compose.yaml
       service: ollama-server
     container_name: llm-ollama-server
     volumes:

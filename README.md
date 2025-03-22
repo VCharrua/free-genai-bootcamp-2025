@@ -42,6 +42,22 @@ Future contributions may be allowed in forked versions of this repo.
 
 > **Note:** The documentation and code contained in this repository will be updated during the event, thus detailing the various phases and concepts implemented in this solution.
 
+Check the individual project documentation for more details.
+
+## Bootcamp Projects
+
+This `Free GenAI Bootcamp 2025` repo contains the following projects developed during the event:
+
+| Project name | Description | Link | Deployment |
+|--------------|-------------|------|------------|
+| GenAI Architecting | Comprehensive architectural planning for the language learning platform, covering business requirements, data strategy, model selection criteria, infrastructure design, and governance considerations for supporting multiple languages and AI use-cases | [readme](./genai-architecting/readme.md) | N/A |
+| Language Portal | A comprehensive language learning platform for Portuguese and Kimbundu vocabulary acquisition serving as a vocabulary repository, learning record store, and unified launchpad for various language learning applications | [readme](./lang-portal/Readme.md) | [docker](./lang-portal/deployment/docker_compose) |
+| Language Portal - *Backend* | Backend component of the Lang-Portal project providing a Flask API for data management of vocabulary words, study sessions, and learning activities | [readme](./lang-portal/backend-flask/readme.md) | [docker](./lang-portal/backend-flask/Dockerfile) |
+| Language Portal - *Frontend* | Frontend component of the Lang-Portal project built with React to provide an intuitive user interface for vocabulary exploration and study session management | [readme](./lang-portal/frontend-react/README.md) | [docker](./lang-portal/frontend-react/Dockerfile) |
+| Sentence Construction | AI-powered tools for sentence construction using different LLM models including ChatGPT, Claude, and Meta AI | [readme](./sentence-construction/readme.md) | N/A |
+| Vocabulary Importer | Web application for generating thematic vocabulary categories for language learning using AI, expanding the Language Portal's vocabulary repository | [readme](./vocabulary-importer/README.md) | [docker](./vocabulary-importer/deployment/docker_compose) |
+| Ollama Mega-service | Implementation guide for running large language models locally using Ollama's efficient runtime with Open-WebUI frontend | [readme](./opea-comps/ollama/README.md) | [docker](./opea-comps/ollama/deployment/docker_compose) |
+| Translation Mega-service | OPEA Translation Mega-service architecture implementation guide providing powerful translation capabilities powered by large language models | [readme](./opea-comps/mega-service/readme.md) | [docker](./opea-comps/mega-service/translation/deployment/docker_compose) |
 
 
 ## Resources 

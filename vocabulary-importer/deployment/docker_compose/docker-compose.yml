@@ -4,7 +4,7 @@ name: vocabulary-importer-deployment
 
 services:
   vocabulary-importer:
-    build: ../importer-react
+    build: ../../importer-react
     container_name: vocabulary-importer-server
     image: genai-bootcamp-2025/vocabulary-importer-webapp:latest
     environment:

@@ -122,7 +122,7 @@ docker network create \
 Deploy all services using Docker Compose:
 
 ```bash
-cd ollama-service/docker_compose
+cd ollama-service/deployment/docker_compose
 docker compose up -d
 ```
 
