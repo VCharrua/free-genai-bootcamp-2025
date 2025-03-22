@@ -27,7 +27,7 @@ flowchart LR
     style Translation-MegaService stroke:#000000
 
     %% Subgraphs %%
-    subgraph Translation-MegaService["Translation MegaService "]
+    subgraph Translation-MegaService[" Translation MegaService "]
         direction LR
         LLM([LLM MicroService]):::blue
     end
@@ -39,7 +39,7 @@ flowchart LR
 
 
     LLM_gen{{LLM Service <br>}}
-    GW([Translation GateWay<br>]):::orange
+    GW([*Translation GateWay*<br>]):::orange
     NG([Nginx MicroService]):::blue
 
 

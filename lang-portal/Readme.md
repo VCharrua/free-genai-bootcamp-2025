@@ -34,18 +34,18 @@ flowchart LR
     style Backend-Component stroke:#000000
 
     %% Subgraphs %%
-    subgraph Backend-Component[" Flask Backend "]
+    subgraph Backend-Component[" **Flask Backend** "]
         direction LR
         AE([API Endpoints]):::blue
     end
-    subgraph Frontend-Componen[" React Frontend "]
+    subgraph Frontend-Componen[" **React Frontend** "]
         direction LR
         a([User Interface Portal]):::orchid
         UI([UI server<br>]):::orchid
     end
 
     db{{SQLite3 Database <br>}}
-    AC([API calls<br>]):::orange
+    AC([*API calls*<br>]):::orange
 
     %% User UI interaction
     direction LR
@@ -190,7 +190,7 @@ lang-portal/
 - Frontend: Environment variables in `.env` file
 
 
-## Deployment with Docker
+## Deployment with Docker Compose
 
 In order to deploy the application using Docker, you can user the `docker-compose.yml` file in the `deployment/docker_compose` directory.
 

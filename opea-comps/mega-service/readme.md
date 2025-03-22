@@ -35,7 +35,7 @@ flowchart LR
     style Translation-MegaService stroke:#000000
 
     %% Subgraphs %%
-    subgraph Translation-MegaService["Translation MegaService "]
+    subgraph Translation-MegaService[" Translation MegaService "]
         direction LR
         LLM([LLM MicroService]):::blue
     end
@@ -51,7 +51,7 @@ flowchart LR
     end
 
     LLM_gen{{LLM Service <br>}}
-    GW([Translation GateWay<br>]):::orange
+    GW([*Translation GateWay*<br>]):::orange
     NG([Nginx MicroService]):::blue
 
     %% Questions interaction
@@ -62,12 +62,10 @@ flowchart LR
     UI --> GW
     GW <==> Translation-MegaService
 
-
     %% Integration interaction
     direction LR
     a2[Lang-Portal Website] --> |Translation Study Activity|LP
     LP --> GW
-
 
     %% Embedding service flow
     direction LR
@@ -173,7 +171,7 @@ Deploy all services using Docker Compose:
 
 ```bash
 cd opea-comps/mega-service/translation/docker_compose
-docker-compose up -d
+docker compose up -d
 ```
 
 This will start:
@@ -190,7 +188,7 @@ For specific deployment information on Intel Xeon, refer to the [Xeon Guide](./t
 Check that all containers are running:
 
 ```bash
-docker-compose ps
+docker compose ps
 ```
 
 Expected output should show all five containers in the "running" state.

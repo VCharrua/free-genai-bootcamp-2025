@@ -37,46 +37,42 @@ config:
     fontSize: 20px
 ---
 flowchart LR
-    %% Main components
-    User([End User])
-    FrontEnd[Next.js Web Application]
-    BackEnd[Server-Side Processing]
-    LLM[Groq LLM Service]
-    
-    %% Flow connections
-    User -->|1. Enter Theme| FrontEnd
-    FrontEnd -->|2. Submit Request| BackEnd
-    BackEnd -->|3. Send Prompt| LLM
-    LLM -->|4. Return Vocabulary| BackEnd
-    BackEnd -->|5. Format Response| FrontEnd
-    FrontEnd -->|6. Display Results| User
-    User -->|7. Copy JSON| User
-    
-    %% Colors and styles
+
+    %% Colors %%
     classDef blue fill:#ADD8E6,stroke:#ADD8E6,stroke-width:2px,fill-opacity:0.5
     classDef orange fill:#FBAA60,stroke:#ADD8E6,stroke-width:2px,fill-opacity:0.5
     classDef orchid fill:#C26DBC,stroke:#ADD8E6,stroke-width:2px,fill-opacity:0.5
-    
-    %% Grouping and styling
-    subgraph "Client Side"
-        User
-        FrontEnd
+    classDef invisible fill:transparent,stroke:transparent;
+    style Groq-Backend-Component stroke:#000000
+
+    %% Subgraphs %%
+    subgraph vocabulary-Component[" **Vocabulary Web App** "]
+        direction LR
+        User([End User]):::orchid
+        FrontEnd[Next.js Web Application]:::orchid
+        API([AI-SDK]):::blue
     end
-    
-    subgraph "Server Side"
-        style ServerSide stroke:#000000
-        BackEnd
+    subgraph Groq-Backend-Component[" **Groq Backend API** "]
+        direction LR
+        LLM[Groq LLM Service]:::blue
     end
-    
-    subgraph "External Service"
-        style ExternalAPI stroke:#000000
-        LLM
-    end
-    
-    %% Apply color classes
-    class User,FrontEnd orchid
-    class BackEnd blue
-    class LLM orange
+
+    AC([*API calls*<br>]):::orange
+    Models{{Groq Models <br>}}
+    AC <--> LLM
+
+    %% Frontend Flow %%
+    direction LR
+    User --> FrontEnd
+    FrontEnd --> |Groq API key|API
+    API --> AC
+
+    %% Groq service flow
+    direction LR
+    LLM <-.-> Models
+
+    classDef databaseClass fill:#ff9800,stroke:#333,stroke-width:1px; 
+    class Database databaseClass;
 ```
 
 ## Main Features
@@ -160,7 +156,7 @@ docker build -t genai-bootcamp-2025/vocabulary-importer-webapp:latest .
 docker run -p 3001:3000 genai-bootcamp-2025/vocabulary-importer-webapp:latest
 ```
 
-## Deployment with Docker
+## Deployment with Docker Compose
 
 In order to deploy the application using Docker, you can user the `docker-compose.yml` file in the `deployment/docker_compose` directory.
 

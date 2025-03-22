@@ -175,16 +175,16 @@ flowchart LR
     classDef invisible fill:transparent,stroke:transparent;
 
     %% Subgraphs %%
-    subgraph "Frontend (React)"
+    subgraph "**Frontend** (*React*)"
         direction LR
         UI[UI Components]:::orchid
         APIClient[API Client]:::orchid
     end
     
-    REST([REST API Calls]):::orange
+    REST([*REST API Calls*]):::orange
     REST <--> Endpoints
     
-    subgraph "Backend (Flask)"
+    subgraph "**Backend** (*Flask*)"
         Endpoints:::blue
         Models:::orchid
     end

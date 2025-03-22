@@ -32,7 +32,7 @@ vocabulary-importer/
 │   ├── layout.tsx                 # Root layout component
 │   └── globals.css                # Global styles
 ├── components/                    # UI components
-│   ├── theme-provider.tsx          # Theme switching component
+│   ├── theme-provider.tsx         # Theme switching component
 │   ├── vocabulary-importer.tsx    # Combined form and results component
 │   └── ui/                        # ShadCN UI components
 ├── lib/                           # Utility functions
