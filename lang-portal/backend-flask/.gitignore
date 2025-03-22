@@ -16,8 +16,9 @@ build/
 env/
 venv/
 ENV/
-.env
+.env*
 .venv
+!.env.example
 
 # Flask specific
 instance/

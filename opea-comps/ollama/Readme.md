@@ -26,11 +26,11 @@ flowchart LR
     style Ollama-MegaService stroke:#000000
 
     %% Subgraphs %%
-    subgraph Ollama-MegaService["Ollama MegaService "]
+    subgraph Ollama-MegaService[" **Ollama MegaService** "]
         direction LR
         Ollama([Ollama Server]):::blue
     end
-    subgraph UserInterface[" User Interface "]
+    subgraph UserInterface[" **User Interface** "]
         direction LR
         User([User]):::orchid
         OpenWebUI([Open-WebUI<br>]):::orchid
@@ -122,8 +122,8 @@ docker network create \
 Deploy all services using Docker Compose:
 
 ```bash
-cd ollama-service/docker_compose
-docker-compose up -d
+cd ollama-service/deployment/docker_compose
+docker compose up -d
 ```
 
 This will start:
@@ -135,7 +135,7 @@ This will start:
 Check that all containers are running:
 
 ```bash
-docker-compose ps
+docker compose ps
 ```
 
 Expected output should show all three containers in the "running" state.
@@ -216,7 +216,7 @@ The interface allows you to:
 View logs for a specific service:
 
 ```bash
-docker-compose logs -f ollama-server
+docker compose logs -f ollama-server
 ```
 
 ### Restarting Services
@@ -224,7 +224,7 @@ docker-compose logs -f ollama-server
 Restart a specific service:
 
 ```bash
-docker-compose restart open-webui
+docker compose restart open-webui
 ```
 
 ### Stopping the Mega-Service
@@ -232,7 +232,7 @@ docker-compose restart open-webui
 Stop all services:
 
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ## Troubleshooting

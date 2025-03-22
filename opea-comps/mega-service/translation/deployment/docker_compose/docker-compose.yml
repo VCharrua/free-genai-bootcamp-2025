@@ -1,0 +1,136 @@
+# Copyright (C) 2024 Intel Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+services:
+  llm-ollama-server:
+    extends: 
+      file: ../../../../comps/third_parties/ollama/deployment/docker_compose/compose.yaml
+      service: ollama-server
+    container_name: llm-ollama-server
+    volumes:
+      - ollama-data:/root/.ollama
+    runtime: nvidia
+    environment:
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
+      CUDA_VISIBLE_DEVICES: 0
+      LOG_LEVEL: debug
+      LLM_COMPONENT_NAME: ${LLM_COMPONENT_NAME:-OpeaTextGenService}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"
+    tty: true
+    networks:
+      ollama-net:
+        ipv4_address: ${LLM_HOST_IP:-10.5.0.2}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"                
+    restart: unless-stopped
+  llm:
+    image: opea/llm-textgen
+    container_name: llm-textgen-server
+    depends_on:
+      - llm-ollama-server
+    ports:
+      - "9000:9000"
+    ipc: host
+    environment:
+      no_proxy: ${no_proxy}
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      LLM_ENDPOINT: ${TGI_LLM_ENDPOINT}
+      LLM_MODEL_ID: ${LLM_MODEL_ID}
+      HUGGINGFACEHUB_API_TOKEN: ${HUGGINGFACEHUB_API_TOKEN}
+      HF_HUB_DISABLE_PROGRESS_BARS: 1
+      HF_HUB_ENABLE_HF_TRANSFER: 0
+    restart: unless-stopped
+    networks:
+      ollama-net:
+        ipv4_address: ${LLM_SERVICE_HOST_IP:-10.5.0.3}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"        
+  translation-backend-server:
+    image: ${REGISTRY:-opea}/translation:${TAG:-latest}
+    container_name: translation-backend-server
+    depends_on:
+      - llm-ollama-server
+      - llm
+    ports:
+      - "8888:8888"
+    environment:
+      - no_proxy=${no_proxy}
+      - https_proxy=${https_proxy}
+      - http_proxy=${http_proxy}
+      - MEGA_SERVICE_HOST_IP=${MEGA_SERVICE_HOST_IP}
+      - LLM_SERVICE_HOST_IP=${LLM_SERVICE_HOST_IP}
+    ipc: host
+    networks:
+      ollama-net:
+        ipv4_address: ${MEGA_SERVICE_HOST_IP:-10.5.0.4}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"          
+    restart: always
+
+  translation-ui-server:
+    image: ${REGISTRY:-opea}/translation-ui:${TAG:-latest}
+    container_name: translation-ui-server
+    depends_on:
+      - translation-backend-server
+    ports:
+      - "5173:5173"
+    environment:
+      - no_proxy=${no_proxy}
+      - https_proxy=${https_proxy}
+      - http_proxy=${http_proxy}
+      - BASE_URL=${BACKEND_SERVICE_ENDPOINT}
+    ipc: host
+    networks:
+      ollama-net:
+        ipv4_address: ${FRONTEND_SERVICE_IP:-10.5.0.5} 
+    extra_hosts:
+      - "host.docker.internal:host-gateway"        
+    restart: always
+
+  translation-nginx-server:
+    image: ${REGISTRY:-opea}/nginx:${TAG:-latest}
+    container_name: translation-nginx-server
+    depends_on:
+      - translation-backend-server
+      - translation-ui-server
+    ports:
+      - "${NGINX_PORT:-80}:80"
+    environment:
+      - no_proxy=${no_proxy}
+      - https_proxy=${https_proxy}
+      - http_proxy=${http_proxy}
+      - FRONTEND_SERVICE_IP=${FRONTEND_SERVICE_IP}
+      - FRONTEND_SERVICE_PORT=${FRONTEND_SERVICE_PORT}
+      - BACKEND_SERVICE_NAME=${BACKEND_SERVICE_NAME}
+      - BACKEND_SERVICE_IP=${BACKEND_SERVICE_IP}
+      - BACKEND_SERVICE_PORT=${BACKEND_SERVICE_PORT}
+    ipc: host
+    networks:
+      ollama-net:
+        ipv4_address: ${FRONTEND_NGINX_IP:-10.5.0.6} 
+    restart: always
+
+volumes:
+  ollama-data: 
+    external: true
+
+networks:
+  ollama-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${OPEA_NETW_SUBNET:-10.5.0.0/16}
+          gateway: ${OPEA_NETW_GATEWAY:-10.5.0.1}
