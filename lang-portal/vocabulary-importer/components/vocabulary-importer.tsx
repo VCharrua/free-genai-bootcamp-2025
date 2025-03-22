@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { Loader2, Copy, Check } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { toast } from "sonner"
 
 export default function VocabularyImporter() {
   const [thematicCategory, setThematicCategory] = useState("")
@@ -56,7 +57,7 @@ export default function VocabularyImporter() {
       await navigator.clipboard.writeText(result)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
-      alert("Vocabulary copied to clipboard!")
+      toast.success("Vocabulary copied to clipboard!")
     } catch (err) {
       setError("Failed to copy to clipboard")
     }
