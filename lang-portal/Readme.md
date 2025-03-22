@@ -16,8 +16,6 @@ Lang-Portal serves as a central hub for language learning with three main purpos
 
 Lang-Portal is built using a modern tech stack with a Flask backend and React frontend:
 
-
-
 ```mermaid
 ---
 config:

@@ -19,7 +19,7 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "yarn install",
-	"postCreateCommand": "cd /workspaces/free-genai-bootcamp-2025/lang-portal/vocabulary-importer && npm install"
+	"postCreateCommand": "cd /workspaces/free-genai-bootcamp-2025/vocabulary-importer/importer-react && npm install"
 	
 	// Configure tool-specific properties.
 	// "customizations": {},

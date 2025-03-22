@@ -1,0 +1,26 @@
+# Copyright (C) 2024 Intel Corporation
+# SPDX-License-Identifier: Apache-2.0
+name: vocabulary-importer-deployment
+
+services:
+  vocabulary-importer:
+    build: ../importer-react
+    container_name: vocabulary-importer-server
+    image: genai-bootcamp-2025/vocabulary-importer-webapp:latest
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    ports:
+      - 3001:3000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"  
+    networks:
+      vocabulary-net:
+        ipv4_address: ${VOCAB_HOST_IP:-10.40.0.3} 
+
+networks:
+  vocabulary-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${VOCAB_NETW_SUBNET:-10.40.0.0/24}
+          gateway: ${VOCAB_NETW_GATEWAY:-10.40.0.1}
