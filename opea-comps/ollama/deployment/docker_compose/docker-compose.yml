@@ -31,7 +31,7 @@ services:
     tty: true
     networks:
       ollama-net:
-        ipv4_address: ${WEBUI_HOST_IP:-10.5.0.2} 
+        ipv4_address: ${LLM_HOST_IP:-10.5.0.2} 
     extra_hosts:
       - "host.docker.internal:host-gateway"                
     restart: unless-stopped
@@ -47,7 +47,7 @@ services:
     volumes:
       - open-webui:/app/backend/data
     ports:
-      - 3000:8080
+      - ${WEBUI_PORT_HOST:-3000}:${WEBUI_PORT_CONTAINER:8080}
     logging:
       driver: json-file
       options:
@@ -73,5 +73,5 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: ${OPEA_NETW_SUBNET:-10.5.0.0/16}
-          gateway: ${OPEA_NETW_GATEWAY:-10.5.0.1}
+        - subnet: ${OLLAMA_NETW_SUBNET:-10.5.0.0/16}
+          gateway: ${OLLAMA_NETW_GATEWAY:-10.5.0.1}

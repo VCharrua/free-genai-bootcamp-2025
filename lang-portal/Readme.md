@@ -1,4 +1,4 @@
-# Lang-Portal
+# Language Portal
 
 ![Lang-Portal Banner](./ui-images/banner.png)
 

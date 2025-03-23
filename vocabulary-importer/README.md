@@ -139,6 +139,10 @@ yarn dev
 
 The application will be available at http://localhost:3001
 
+![Vocabulary View 1](ui-images/screenshot01_s.png)
+
+![Vocabulary View 2](ui-images/screenshot02_s.png)
+
 ### Docker Deployment
 
 You can deploy the application using Docker:

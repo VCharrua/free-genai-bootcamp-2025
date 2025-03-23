@@ -84,31 +84,31 @@ Change the `LLM_MODEL_ID` below for your needs.
 
 ### Setup Environment Variables
 
-1. Set the required environment variables:
+#### 1. Set the required environment variables:
 
-   ```bash
-   # Example: host_ip="192.168.1.1"
-   export host_ip="External_Public_IP"
-   # Example: no_proxy="localhost, 127.0.0.1, 192.168.1.1"
-   export no_proxy="Your_No_Proxy"
-   export HUGGINGFACEHUB_API_TOKEN="Your_Huggingface_API_Token"
-   # Example: NGINX_PORT=80
-   export NGINX_PORT=${your_nginx_port}
-   ```
+```bash
+# Example: host_ip="192.168.1.1"
+export host_ip="External_Public_IP"
+# Example: no_proxy="localhost, 127.0.0.1, 192.168.1.1"
+export no_proxy="Your_No_Proxy"
+export HUGGINGFACEHUB_API_TOKEN="Your_Huggingface_API_Token"
+# Example: NGINX_PORT=80
+export NGINX_PORT=${your_nginx_port}
+```
 
-2. If you are in a proxy environment, also set the proxy-related environment variables:
+#### 2. If you are in a proxy environment, also set the proxy-related environment variables:
 
-   ```bash
-   export http_proxy="Your_HTTP_Proxy"
-   export https_proxy="Your_HTTPs_Proxy"
-   ```
+```bash
+export http_proxy="Your_HTTP_Proxy"
+export https_proxy="Your_HTTPs_Proxy"
+```
 
-3. Set up other environment variables:
+#### 3. Set up other environment variables:
 
-   ```bash
-   cd ../../../
-   source set_env.sh
-   ```
+```bash
+cd ../../../
+source set_env.sh
+```
 
 ### Start Microservice Docker Containers
 
@@ -127,38 +127,38 @@ docker pull opea/nginx:latest
 
 ### Validate Microservices
 
-1. TGI Service
+#### 1. Ollama Service
 
-   ```bash
-   curl http://${host_ip}:8008/generate \
-     -X POST \
-     -d '{"inputs":"What is Deep Learning?","parameters":{"max_new_tokens":17, "do_sample": true}}' \
-     -H 'Content-Type: application/json'
-   ```
+```bash
+curl http://${host_ip}:8008/generate \
+  -X POST \
+  -d '{"inputs":"What is Deep Learning?","parameters":{"max_new_tokens":17, "do_sample": true}}' \
+  -H 'Content-Type: application/json'
+```
 
-2. LLM Microservice
+#### 2. LLM Microservice
 
-   ```bash
-   curl http://${host_ip}:9000/v1/chat/completions \
-     -X POST \
-     -d '{"query":"Translate this from Chinese to English:\nChinese: 我爱机器翻译。\nEnglish:"}' \
-     -H 'Content-Type: application/json'
-   ```
+```bash
+curl http://${host_ip}:9000/v1/chat/completions \
+  -X POST \
+  -d '{"query":"Translate this from Portuguese to English:\nPortuguese: Hoje vai chover.\nEnglish:"}' \
+  -H 'Content-Type: application/json'
+```
 
-3. MegaService
+#### 3. MegaService
 
-   ```bash
-   curl http://${host_ip}:8888/v1/translation -H "Content-Type: application/json" -d '{
-        "language_from": "Chinese","language_to": "English","source_language": "我爱机器翻译。"}'
-   ```
+```bash
+curl http://${host_ip}:8888/v1/translation -H "Content-Type: application/json" -d '{
+    "language_from": "Portuguese","language_to": "English","source_language": "Hoje vai chover."}'
+```
 
-4. Nginx Service
+#### 4. Nginx Service
 
-   ```bash
-   curl http://${host_ip}:${NGINX_PORT}/v1/translation \
-       -H "Content-Type: application/json" \
-       -d '{"language_from": "Chinese","language_to": "English","source_language": "我爱机器翻译。"}'
-   ```
+```bash
+curl http://${host_ip}:${NGINX_PORT}/v1/translation \
+    -H "Content-Type: application/json" \
+    -d '{"language_from": "Portuguese","language_to": "English","source_language": "Hoje vai chover."}'
+```
 
 Following the validation of all aforementioned microservices, we are now prepared to construct a mega-service.
 

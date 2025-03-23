@@ -69,20 +69,19 @@ Create a `.env` file in the `docker_compose` directory with the following config
 
 ```bash
 # Network Configuration
-OLLAMA_NETWORK_NAME=ollama-net
-OLLAMA_NETWORK_SUBNET=10.6.0.0/16
-OLLAMA_NETWORK_GATEWAY=10.6.0.1
-OLLAMA_SERVER_IP=10.6.0.2
-OPENWEBUI_SERVER_IP=10.6.0.3
+OLLAMA_NETW_SUBNET=10.6.0.0/16
+OLLAMA_NETW_GATEWAY=10.6.0.1
+LLM_HOST_IP=10.6.0.2
+WEBUI_HOST_IP=10.6.0.3
 
 # Ollama Configuration
-OLLAMA_HOST=ollama-server
-OLLAMA_PORT=11434
-OLLAMA_MODELS_PATH=./ollama-models
+LLM_ENDPOINT_PORT="11434"
+LLM_ENDPOINT="http://${LLM_HOST_IP}:${LLM_ENDPOINT_PORT}"
+LLM_MODEL_ID="llama3.1"
 
 # OpenWebUI Configuration
-OPENWEBUI_PORT=3000
-OPENWEBUI_HOST_PORT=8080
+WEBUI_PORT_HOST=3000
+WEBUI_PORT_CONTAINER=8080
 ```
 
 ## Hardware Support
@@ -143,7 +142,7 @@ Expected output should show all three containers in the "running" state.
 Access the Open-WebUI through your web browser:
 
 ```bash
-http://localhost:8080
+http://localhost:3000
 ```
 
 ## Downloading Models
@@ -162,6 +161,11 @@ curl -X POST http://localhost:11434/api/pull -d '{"model":"llama3:instruct"}'
 ```
 
 Alternatively, models can be downloaded directly through the Open-WebUI interface.
+
+### Model Storage
+
+The downloaded models will be stored in a Docker volume defined in the `docker-compose.yml` file. This ensures that the models persist across container restarts and are easily accessible by the Ollama server. The volume configuration can be found under the `volumes` section in the `docker-compose.yml` file.
+
 
 ## API Usage
 
