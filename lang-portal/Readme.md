@@ -189,24 +189,50 @@ lang-portal/
 - Backend: Configuration in `config.py`
 - Frontend: Environment variables in `.env` file
 
+Use can use the `.env` file or use the `set_env.sh` script to set environment variables for the frontend and backend deployments.
+
+1. Set the required environment variables:
+
+   ```bash
+   # Example: host_ip="192.168.1.1"
+   export host_ip="External_Public_IP"
+   # Example: no_proxy="localhost, 127.0.0.1, 192.168.1.1"
+   export no_proxy="Your_No_Proxy"
+   export VITE_API_BASE_URL=http://localhost:5000
+   ```
+
+2. If you are in a proxy environment, also set the proxy-related environment variables:
+
+   ```bash
+   export http_proxy="Your_HTTP_Proxy"
+   export https_proxy="Your_HTTPs_Proxy"
+   ```
+
+3. Set up other environment variables:
+
+   ```bash
+   cd docker_compose
+   source set_env.sh
+   ```
+
 
 ## Deployment with Docker Compose
 
-In order to deploy the application using Docker, you can user the `docker-compose.yml` file in the `deployment/docker_compose` directory.
+In order to deploy the application using Docker, you can user the `docker-compose.yml` file in the `docker_compose` directory.
 
 ### Deployment with image build
 
 To be used for the first time deployment with image build for the `backend-flask` and `frontend-react` services:
 
 ```	bash
-cd deployment/docker_compose
+cd docker_compose
 docker compose up --build -d
 ```
 
 ### Deployment without image build
 
 ```	bash
-cd deployment/docker_compose
+cd docker_compose
 docker compose up -d
 ```
 

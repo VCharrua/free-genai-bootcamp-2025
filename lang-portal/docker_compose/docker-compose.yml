@@ -4,7 +4,7 @@ name: lang-portal-deployment
 
 services:
   backend-server:
-    build: ../../backend-flask
+    build: ../backend-flask
     container_name: lang-portal-backend-server
     image: genai-bootcamp-2025/language-portal-backend:latest
     ports:
@@ -17,7 +17,7 @@ services:
       - "host.docker.internal:host-gateway"                
 
   frontend-webui:
-    build: ../../frontend-react
+    build: ../rontend-react
     container_name: lang-portal-frontend-server
     image: genai-bootcamp-2025/language-portal-frontend:latest
     environment:
@@ -37,5 +37,5 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: ${OPEA_NETW_SUBNET:-10.20.0.0/24}
-          gateway: ${OPEA_NETW_GATEWAY:-10.20.0.1}
+        - subnet: ${LP_NETW_SUBNET:-10.20.0.0/24}
+          gateway: ${LP_NETW_GATEWAY:-10.20.0.1}

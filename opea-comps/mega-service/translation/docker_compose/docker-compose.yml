@@ -8,7 +8,7 @@ services:
       service: ollama-server
     container_name: llm-ollama-server
     volumes:
-      - ollama-data:/root/.ollama
+      - ${MODEL_CACHE:-ollama-data}:/root/.ollama
     runtime: nvidia
     environment:
       NVIDIA_VISIBLE_DEVICES: all
@@ -30,7 +30,7 @@ services:
         max-file: "2"
     tty: true
     networks:
-      ollama-net:
+      ${NETW_NAME:-opea-network}:
         ipv4_address: ${LLM_HOST_IP:-10.5.0.2}
     extra_hosts:
       - "host.docker.internal:host-gateway"                
@@ -54,7 +54,7 @@ services:
       HF_HUB_ENABLE_HF_TRANSFER: 0
     restart: unless-stopped
     networks:
-      ollama-net:
+      ${NETW_NAME:-opea-network}:
         ipv4_address: ${LLM_SERVICE_HOST_IP:-10.5.0.3}
     extra_hosts:
       - "host.docker.internal:host-gateway"        
@@ -74,7 +74,7 @@ services:
       - LLM_SERVICE_HOST_IP=${LLM_SERVICE_HOST_IP}
     ipc: host
     networks:
-      ollama-net:
+      ${NETW_NAME:-opea-network}:
         ipv4_address: ${MEGA_SERVICE_HOST_IP:-10.5.0.4}
     extra_hosts:
       - "host.docker.internal:host-gateway"          
@@ -94,7 +94,7 @@ services:
       - BASE_URL=${BACKEND_SERVICE_ENDPOINT}
     ipc: host
     networks:
-      ollama-net:
+      ${NETW_NAME:-opea-network}:
         ipv4_address: ${FRONTEND_SERVICE_IP:-10.5.0.5} 
     extra_hosts:
       - "host.docker.internal:host-gateway"        
@@ -119,16 +119,18 @@ services:
       - BACKEND_SERVICE_PORT=${BACKEND_SERVICE_PORT}
     ipc: host
     networks:
-      ollama-net:
+      ${NETW_NAME:-opea-network}:
         ipv4_address: ${FRONTEND_NGINX_IP:-10.5.0.6} 
     restart: always
 
+
+# Delete this if you want the volume to be internal
 volumes:
-  ollama-data: 
+  ${MODEL_CACHE:-ollama-data}: 
     external: true
 
 networks:
-  ollama-net:
+  ${NETW_NAME:-opea-network}:
     driver: bridge
     ipam:
       config:
